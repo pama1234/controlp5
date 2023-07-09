@@ -52,7 +52,7 @@ The range of available controllers includes Slider, Button, Toggle, Knob, Textfi
   * [Digital Object Identifiers ](#doi)
 
   
-## <a name"install"></a>Installation
+## <a name="install"></a>Installation
 
 To install the library from inside the Processing IDE, use the Library Manager from the menu under sketch.Sketch &rarr; Import Library &rarr; Add Library and search for ControlP5.
 
