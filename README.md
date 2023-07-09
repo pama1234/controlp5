@@ -1,12 +1,30 @@
 ## this is a fork of the original controlP5 library by Andreas Schlegel
+It's not intended to use with Processing IDE although it should work if you know how.
+I tested it only with vanilla Java and extending the PApplet class
 ## My changes include:
 - it provides a pom.xml for maven and can be used as a dependency in maven projects
 - Tweeks in the getting focus/losing focus for custom controllers that extends the Controller class (See ReleasedOutsideListener.java Interface)
+- Layout Build
+  quick example
+  ``` LayoutBuilder builder = new LayoutBuilder(this,cp5);
+        try {
+            builder.parseXML("<Window>\n" +
+                    "<Textfield width=23px height=230px x=100px y=10px>  \n" +
+                    "    <Button>\n" +
+                    "    </Button>  \n" +
+                    "</Textfield>\n" +
+                    "    <coiso></coiso>\n" +
+                    "</Window>"
+
+            );
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+  ```
 
 
 
-
-# ControlP5
+# Original ReadMe bellow:
 
 ControlP5 is a GUI library written by [Andreas Schlegel](http://www.sojamo.de) for the programming environment [Processing](http://www.processing.org). 
 
