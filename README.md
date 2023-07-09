@@ -4,23 +4,28 @@ I tested it only with vanilla Java and extending the PApplet class
 ## My changes include:
 - it provides a pom.xml for maven and can be used as a dependency in maven projects
 - Tweeks in the getting focus/losing focus for custom controllers that extends the Controller class (See ReleasedOutsideListener.java Interface)
-- Layout Build
+- Layout Build (WIP)
   quick example
-  ``` LayoutBuilder builder = new LayoutBuilder(this,cp5);
+  ```
+  LayoutBuilder builder = new LayoutBuilder(this,cp5);
         try {
             builder.parseXML("<Window>\n" +
-                    "<Textfield width=23px height=230px x=100px y=10px>  \n" +
+                    "<Group width=23px height=230px x=100px y=10px>  \n" +
                     "    <Button>\n" +
                     "    </Button>  \n" +
-                    "</Textfield>\n" +
-                    "    <coiso></coiso>\n" +
+                    "</Group>\n" +
+                    "    <Textfield></Textfield>\n" +
                     "</Window>"
 
             );
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
+  // you now have two buttons and a textield in the cp5 obj
+  
   ```
+  
 
 
 
