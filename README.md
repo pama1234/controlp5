@@ -124,7 +124,7 @@ _example 1, see code below_
 _example 2, a range of default ControlP5 controllers_
 
 
-## <a name"how"></a>How does ControlP5 work?
+## <a name="how"></a>How does ControlP5 work?
 
 
 ControlP5 provides a range of controllers, each controller comes with an example which is located inside the examples/controllers folder. This is a good place to get started with ControlP5.
