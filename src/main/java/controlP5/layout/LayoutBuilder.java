@@ -1,7 +1,6 @@
 package controlP5.layout;
 
 
-import controlP5.ColorPicker;
 import controlP5.ControlP5;
 import controlP5.ControllerInterface;
 import controlP5.Group;
@@ -22,7 +21,7 @@ import java.util.HashMap;
 public class LayoutBuilder {
     private final ControlP5 _cp5;
     private final PApplet _pApplet;
-    private final Deque<ElementProps> propertiesInheritance = new ArrayDeque<>();
+    private final Deque<Group> hierarchy = new ArrayDeque<>();
     private final ControllerFactory _factory;
 
     public LayoutBuilder(PApplet pApplet, ControlP5 cp5) {
@@ -66,13 +65,17 @@ public class LayoutBuilder {
             int parentWidth = _pApplet.width;
             int parentHeight = _pApplet.height;
 
+            Group root = _cp5.addGroup("root");
+            root.setWidth(parentWidth);
+            root.setHeight(parentHeight);
+
 
             //visit children
-            propertiesInheritance.push(new ElementProps(parentWidth, parentHeight));
+            hierarchy.push(root);
             for (int i = 0; i < ctx.children.size(); i++) {
                 visit(ctx.children.get(i));
             }
-            propertiesInheritance.pop();
+            hierarchy.pop();
 
             return null;
 
@@ -82,7 +85,7 @@ public class LayoutBuilder {
         public Object visitElement(XMLParser.ElementContext ctx) {
 
             visitStartTag(ctx.startTag());
-            if(ctx.content() != null){
+            if (ctx.content() != null) {
                 visitContent(ctx.content());
             }
             visitEndTag(ctx.endTag());
@@ -92,6 +95,7 @@ public class LayoutBuilder {
 
         @Override
         public Object visitStartTag(XMLParser.StartTagContext ctx) {
+            if (ctx == null) return null;
             HashMap<String, Attribute<?>> attributes = new HashMap<>();
             for (int i = 0; i < ctx.attribute().size(); i++) {
                 Attribute<?> attribute = (Attribute<?>) visitAttribute(ctx.attribute(i));
@@ -99,13 +103,14 @@ public class LayoutBuilder {
             }
 
             Tag tag = new Tag(ctx.Name().getText(), attributes);
+            Group parent = hierarchy.peek();
+            ControllerInterface<?> controller = _factory.createController(tag.getName(), parent);
 
-            ControllerInterface<?> controller = _factory.createController(tag.getName(), propertiesInheritance);
-
-            _factory.configure(controller, tag.getAttributes(),propertiesInheritance);
-
+            _factory.configure(controller, tag.getAttributes(), parent);
+            controller.moveTo(parent);
             //push to the inheritance stack
-            propertiesInheritance.push(new ElementProps(controller.getWidth(), controller.getHeight()));
+            hierarchy.push((Group) controller);
+
 
             return tag;
         }
@@ -116,12 +121,25 @@ public class LayoutBuilder {
         }
 
         public Object visitEndTag(XMLParser.EndTagContext ctx) {
-            propertiesInheritance.pop();
+            hierarchy.pop();
             return super.visitEndTag(ctx);
         }
 
         @Override
         public Object visitAttribute(XMLParser.AttributeContext ctx) {
+
+            //value is null means it is a boolean attribute
+            if (ctx.value() == null) {
+                String name = ctx.Name().getText();
+                return new Attribute<Integer>(name, null);
+            }
+
+            if (ctx.value().NUMBER() != null) {
+                String name = ctx.Name().getText();
+                int value = Integer.parseInt(ctx.value().NUMBER().getText());
+                return new Attribute<Integer>(name, value);
+            }
+
             if (ctx.value().STRING() != null) {
                 String name = ctx.Name().getText();
                 String value = ctx.value().STRING().getText();
@@ -133,8 +151,13 @@ public class LayoutBuilder {
                 int value = Integer.parseInt(ctx.value().NUMBER().getText());
                 return new Attribute<Integer>(name, value);
             }
+            if (ctx.value().UNIT() != null) {
+                String unit = ctx.value().UNIT().getText();
+
+
+            }
             //if it a percentage
-            else if(ctx.value().UNIT() != null && ctx.value().UNIT().getText().equals("%")){
+            if (ctx.value().UNIT() != null && ctx.value().UNIT().getText().equals("%")) {
                 String name = ctx.Name().getText();
                 int value = Integer.parseInt(ctx.value().NUMBER().getText());
                 Percentage percentage = new Percentage(value);
@@ -148,7 +171,7 @@ public class LayoutBuilder {
                 int g = Integer.parseInt(ctx.value().rgb().NUMBER(1).getText());
                 int b = Integer.parseInt(ctx.value().rgb().NUMBER(2).getText());
 //                Color color = (a << 24) | (r << 16) | (g << 8) | b;
-                Color c = new Color(r,g,b,a);
+                Color c = new Color(r, g, b, a);
                 return new Attribute<Color>(name, c);
             }
 
@@ -205,11 +228,11 @@ public class LayoutBuilder {
     }
 
 
-    public static class Percentage{
+    public static class Percentage {
 
         public float percentage;
 
-        public Percentage (float percentage){
+        public Percentage(float percentage) {
             this.percentage = percentage;
         }
 

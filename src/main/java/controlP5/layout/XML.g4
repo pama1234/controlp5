@@ -14,7 +14,9 @@ content   : element | STRING ;
 
 SELF_CLOSING : OPEN Name SLASH_CLOSE ;
 
-attribute : Name EQUALS value ;
+attribute : Name EQUALS value
+          | Name ;
+
 
 
 

@@ -22,10 +22,10 @@ public class XMLParser extends Parser {
 		STRING=16, NUMBER=17;
 	public static final int
 		RULE_document = 0, RULE_element = 1, RULE_startTag = 2, RULE_endTag = 3, 
-		RULE_attribute = 4, RULE_content = 5, RULE_value = 6, RULE_rgb = 7;
+		RULE_content = 4, RULE_attribute = 5, RULE_value = 6, RULE_rgb = 7;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"document", "element", "startTag", "endTag", "attribute", "content", 
+			"document", "element", "startTag", "endTag", "content", "attribute", 
 			"value", "rgb"
 		};
 	}
@@ -361,6 +361,68 @@ public class XMLParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
+	public static class ContentContext extends ParserRuleContext {
+		public ElementContext element() {
+			return getRuleContext(ElementContext.class,0);
+		}
+		public TerminalNode STRING() { return getToken(XMLParser.STRING, 0); }
+		public ContentContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_content; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof XMLListener ) ((XMLListener)listener).enterContent(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof XMLListener ) ((XMLListener)listener).exitContent(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof XMLVisitor ) return ((XMLVisitor<? extends T>)visitor).visitContent(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final ContentContext content() throws RecognitionException {
+		ContentContext _localctx = new ContentContext(_ctx, getState());
+		enterRule(_localctx, 8, RULE_content);
+		try {
+			setState(50);
+			_errHandler.sync(this);
+			switch (_input.LA(1)) {
+			case SELF_CLOSING:
+			case OPEN:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(48);
+				element();
+				}
+				break;
+			case STRING:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(49);
+				match(STRING);
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
 	public static class AttributeContext extends ParserRuleContext {
 		public TerminalNode Name() { return getToken(XMLParser.Name, 0); }
 		public TerminalNode EQUALS() { return getToken(XMLParser.EQUALS, 0); }
@@ -388,78 +450,29 @@ public class XMLParser extends Parser {
 
 	public final AttributeContext attribute() throws RecognitionException {
 		AttributeContext _localctx = new AttributeContext(_ctx, getState());
-		enterRule(_localctx, 8, RULE_attribute);
+		enterRule(_localctx, 10, RULE_attribute);
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(48);
-			match(Name);
-			setState(49);
-			match(EQUALS);
-			setState(50);
-			value();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	@SuppressWarnings("CheckReturnValue")
-	public static class ContentContext extends ParserRuleContext {
-		public ElementContext element() {
-			return getRuleContext(ElementContext.class,0);
-		}
-		public TerminalNode STRING() { return getToken(XMLParser.STRING, 0); }
-		public ContentContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_content; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof XMLListener ) ((XMLListener)listener).enterContent(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof XMLListener ) ((XMLListener)listener).exitContent(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof XMLVisitor ) return ((XMLVisitor<? extends T>)visitor).visitContent(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final ContentContext content() throws RecognitionException {
-		ContentContext _localctx = new ContentContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_content);
-		try {
-			setState(54);
+			setState(56);
 			_errHandler.sync(this);
-			switch (_input.LA(1)) {
-			case SELF_CLOSING:
-			case OPEN:
+			switch ( getInterpreter().adaptivePredict(_input,5,_ctx) ) {
+			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(52);
-				element();
+				match(Name);
+				setState(53);
+				match(EQUALS);
+				setState(54);
+				value();
 				}
 				break;
-			case STRING:
+			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(53);
-				match(STRING);
+				setState(55);
+				match(Name);
 				}
 				break;
-			default:
-				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -504,29 +517,29 @@ public class XMLParser extends Parser {
 		ValueContext _localctx = new ValueContext(_ctx, getState());
 		enterRule(_localctx, 12, RULE_value);
 		try {
-			setState(60);
+			setState(62);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case STRING:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(56);
+				setState(58);
 				match(STRING);
 				}
 				break;
 			case NUMBER:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(57);
+				setState(59);
 				match(NUMBER);
-				setState(58);
+				setState(60);
 				match(UNIT);
 				}
 				break;
 			case T__2:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(59);
+				setState(61);
 				rgb();
 				}
 				break;
@@ -576,14 +589,10 @@ public class XMLParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(62);
-			match(T__2);
-			setState(63);
-			match(T__3);
 			setState(64);
-			match(NUMBER);
+			match(T__2);
 			setState(65);
-			match(T__4);
+			match(T__3);
 			setState(66);
 			match(NUMBER);
 			setState(67);
@@ -591,6 +600,10 @@ public class XMLParser extends Parser {
 			setState(68);
 			match(NUMBER);
 			setState(69);
+			match(T__4);
+			setState(70);
+			match(NUMBER);
+			setState(71);
 			match(T__5);
 			}
 		}
@@ -606,7 +619,7 @@ public class XMLParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u0011H\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001\u0011J\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0001"+
 		"\u0000\u0001\u0000\u0005\u0000\u0013\b\u0000\n\u0000\f\u0000\u0016\t\u0000"+
@@ -614,40 +627,41 @@ public class XMLParser extends Parser {
 		"\u0001\u0001\u0001\u0001\u0001\u0001\u0003\u0001!\b\u0001\u0001\u0002"+
 		"\u0001\u0002\u0001\u0002\u0005\u0002&\b\u0002\n\u0002\f\u0002)\t\u0002"+
 		"\u0001\u0002\u0001\u0002\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003"+
-		"\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0005\u0001\u0005"+
-		"\u0003\u00057\b\u0005\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006"+
-		"\u0003\u0006=\b\u0006\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007"+
+		"\u0001\u0004\u0001\u0004\u0003\u00043\b\u0004\u0001\u0005\u0001\u0005"+
+		"\u0001\u0005\u0001\u0005\u0003\u00059\b\u0005\u0001\u0006\u0001\u0006"+
+		"\u0001\u0006\u0001\u0006\u0003\u0006?\b\u0006\u0001\u0007\u0001\u0007"+
 		"\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007"+
-		"\u0000\u0000\b\u0000\u0002\u0004\u0006\b\n\f\u000e\u0000\u0000F\u0000"+
-		"\u0010\u0001\u0000\u0000\u0000\u0002 \u0001\u0000\u0000\u0000\u0004\""+
-		"\u0001\u0000\u0000\u0000\u0006,\u0001\u0000\u0000\u0000\b0\u0001\u0000"+
-		"\u0000\u0000\n6\u0001\u0000\u0000\u0000\f<\u0001\u0000\u0000\u0000\u000e"+
-		">\u0001\u0000\u0000\u0000\u0010\u0014\u0005\u0001\u0000\u0000\u0011\u0013"+
-		"\u0003\u0002\u0001\u0000\u0012\u0011\u0001\u0000\u0000\u0000\u0013\u0016"+
-		"\u0001\u0000\u0000\u0000\u0014\u0012\u0001\u0000\u0000\u0000\u0014\u0015"+
-		"\u0001\u0000\u0000\u0000\u0015\u0017\u0001\u0000\u0000\u0000\u0016\u0014"+
-		"\u0001\u0000\u0000\u0000\u0017\u0018\u0005\u0002\u0000\u0000\u0018\u0001"+
-		"\u0001\u0000\u0000\u0000\u0019\u001b\u0003\u0004\u0002\u0000\u001a\u001c"+
-		"\u0003\n\u0005\u0000\u001b\u001a\u0001\u0000\u0000\u0000\u001b\u001c\u0001"+
-		"\u0000\u0000\u0000\u001c\u001d\u0001\u0000\u0000\u0000\u001d\u001e\u0003"+
-		"\u0006\u0003\u0000\u001e!\u0001\u0000\u0000\u0000\u001f!\u0005\u0007\u0000"+
-		"\u0000 \u0019\u0001\u0000\u0000\u0000 \u001f\u0001\u0000\u0000\u0000!"+
-		"\u0003\u0001\u0000\u0000\u0000\"#\u0005\n\u0000\u0000#\'\u0005\u000f\u0000"+
-		"\u0000$&\u0003\b\u0004\u0000%$\u0001\u0000\u0000\u0000&)\u0001\u0000\u0000"+
-		"\u0000\'%\u0001\u0000\u0000\u0000\'(\u0001\u0000\u0000\u0000(*\u0001\u0000"+
-		"\u0000\u0000)\'\u0001\u0000\u0000\u0000*+\u0005\f\u0000\u0000+\u0005\u0001"+
-		"\u0000\u0000\u0000,-\u0005\u000b\u0000\u0000-.\u0005\u000f\u0000\u0000"+
-		"./\u0005\f\u0000\u0000/\u0007\u0001\u0000\u0000\u000001\u0005\u000f\u0000"+
-		"\u000012\u0005\u000e\u0000\u000023\u0003\f\u0006\u00003\t\u0001\u0000"+
-		"\u0000\u000047\u0003\u0002\u0001\u000057\u0005\u0010\u0000\u000064\u0001"+
-		"\u0000\u0000\u000065\u0001\u0000\u0000\u00007\u000b\u0001\u0000\u0000"+
-		"\u00008=\u0005\u0010\u0000\u00009:\u0005\u0011\u0000\u0000:=\u0005\b\u0000"+
-		"\u0000;=\u0003\u000e\u0007\u0000<8\u0001\u0000\u0000\u0000<9\u0001\u0000"+
-		"\u0000\u0000<;\u0001\u0000\u0000\u0000=\r\u0001\u0000\u0000\u0000>?\u0005"+
-		"\u0003\u0000\u0000?@\u0005\u0004\u0000\u0000@A\u0005\u0011\u0000\u0000"+
-		"AB\u0005\u0005\u0000\u0000BC\u0005\u0011\u0000\u0000CD\u0005\u0005\u0000"+
-		"\u0000DE\u0005\u0011\u0000\u0000EF\u0005\u0006\u0000\u0000F\u000f\u0001"+
-		"\u0000\u0000\u0000\u0006\u0014\u001b \'6<";
+		"\u0001\u0007\u0001\u0007\u0000\u0000\b\u0000\u0002\u0004\u0006\b\n\f\u000e"+
+		"\u0000\u0000I\u0000\u0010\u0001\u0000\u0000\u0000\u0002 \u0001\u0000\u0000"+
+		"\u0000\u0004\"\u0001\u0000\u0000\u0000\u0006,\u0001\u0000\u0000\u0000"+
+		"\b2\u0001\u0000\u0000\u0000\n8\u0001\u0000\u0000\u0000\f>\u0001\u0000"+
+		"\u0000\u0000\u000e@\u0001\u0000\u0000\u0000\u0010\u0014\u0005\u0001\u0000"+
+		"\u0000\u0011\u0013\u0003\u0002\u0001\u0000\u0012\u0011\u0001\u0000\u0000"+
+		"\u0000\u0013\u0016\u0001\u0000\u0000\u0000\u0014\u0012\u0001\u0000\u0000"+
+		"\u0000\u0014\u0015\u0001\u0000\u0000\u0000\u0015\u0017\u0001\u0000\u0000"+
+		"\u0000\u0016\u0014\u0001\u0000\u0000\u0000\u0017\u0018\u0005\u0002\u0000"+
+		"\u0000\u0018\u0001\u0001\u0000\u0000\u0000\u0019\u001b\u0003\u0004\u0002"+
+		"\u0000\u001a\u001c\u0003\b\u0004\u0000\u001b\u001a\u0001\u0000\u0000\u0000"+
+		"\u001b\u001c\u0001\u0000\u0000\u0000\u001c\u001d\u0001\u0000\u0000\u0000"+
+		"\u001d\u001e\u0003\u0006\u0003\u0000\u001e!\u0001\u0000\u0000\u0000\u001f"+
+		"!\u0005\u0007\u0000\u0000 \u0019\u0001\u0000\u0000\u0000 \u001f\u0001"+
+		"\u0000\u0000\u0000!\u0003\u0001\u0000\u0000\u0000\"#\u0005\n\u0000\u0000"+
+		"#\'\u0005\u000f\u0000\u0000$&\u0003\n\u0005\u0000%$\u0001\u0000\u0000"+
+		"\u0000&)\u0001\u0000\u0000\u0000\'%\u0001\u0000\u0000\u0000\'(\u0001\u0000"+
+		"\u0000\u0000(*\u0001\u0000\u0000\u0000)\'\u0001\u0000\u0000\u0000*+\u0005"+
+		"\f\u0000\u0000+\u0005\u0001\u0000\u0000\u0000,-\u0005\u000b\u0000\u0000"+
+		"-.\u0005\u000f\u0000\u0000./\u0005\f\u0000\u0000/\u0007\u0001\u0000\u0000"+
+		"\u000003\u0003\u0002\u0001\u000013\u0005\u0010\u0000\u000020\u0001\u0000"+
+		"\u0000\u000021\u0001\u0000\u0000\u00003\t\u0001\u0000\u0000\u000045\u0005"+
+		"\u000f\u0000\u000056\u0005\u000e\u0000\u000069\u0003\f\u0006\u000079\u0005"+
+		"\u000f\u0000\u000084\u0001\u0000\u0000\u000087\u0001\u0000\u0000\u0000"+
+		"9\u000b\u0001\u0000\u0000\u0000:?\u0005\u0010\u0000\u0000;<\u0005\u0011"+
+		"\u0000\u0000<?\u0005\b\u0000\u0000=?\u0003\u000e\u0007\u0000>:\u0001\u0000"+
+		"\u0000\u0000>;\u0001\u0000\u0000\u0000>=\u0001\u0000\u0000\u0000?\r\u0001"+
+		"\u0000\u0000\u0000@A\u0005\u0003\u0000\u0000AB\u0005\u0004\u0000\u0000"+
+		"BC\u0005\u0011\u0000\u0000CD\u0005\u0005\u0000\u0000DE\u0005\u0011\u0000"+
+		"\u0000EF\u0005\u0005\u0000\u0000FG\u0005\u0011\u0000\u0000GH\u0005\u0006"+
+		"\u0000\u0000H\u000f\u0001\u0000\u0000\u0000\u0007\u0014\u001b \'28>";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

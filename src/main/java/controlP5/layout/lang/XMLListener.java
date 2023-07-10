@@ -48,16 +48,6 @@ public interface XMLListener extends ParseTreeListener {
 	 */
 	void exitEndTag(XMLParser.EndTagContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link XMLParser#attribute}.
-	 * @param ctx the parse tree
-	 */
-	void enterAttribute(XMLParser.AttributeContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link XMLParser#attribute}.
-	 * @param ctx the parse tree
-	 */
-	void exitAttribute(XMLParser.AttributeContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link XMLParser#content}.
 	 * @param ctx the parse tree
 	 */
@@ -67,6 +57,16 @@ public interface XMLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitContent(XMLParser.ContentContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link XMLParser#attribute}.
+	 * @param ctx the parse tree
+	 */
+	void enterAttribute(XMLParser.AttributeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link XMLParser#attribute}.
+	 * @param ctx the parse tree
+	 */
+	void exitAttribute(XMLParser.AttributeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link XMLParser#value}.
 	 * @param ctx the parse tree

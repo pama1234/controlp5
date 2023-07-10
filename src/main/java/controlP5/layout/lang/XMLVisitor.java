@@ -35,17 +35,17 @@ public interface XMLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitEndTag(XMLParser.EndTagContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link XMLParser#attribute}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAttribute(XMLParser.AttributeContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link XMLParser#content}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitContent(XMLParser.ContentContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link XMLParser#attribute}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAttribute(XMLParser.AttributeContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link XMLParser#value}.
 	 * @param ctx the parse tree

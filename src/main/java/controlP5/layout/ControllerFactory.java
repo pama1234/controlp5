@@ -60,7 +60,7 @@ public class ControllerFactory {
     }
 
     /* creates  a ControllerInterface based on the controllerTypeName */
-    public ControllerInterface<?> createController(String controllerTypeName, Deque<LayoutBuilder.ElementProps> propertiesInheritance) {
+    public ControllerInterface<?> createController(String controllerTypeName, Group parent) {
         /* Class of the desired controller */
         Class<? extends ControllerInterface> controllerClass = controlMap.get(controllerTypeName);
 
@@ -75,7 +75,6 @@ public class ControllerFactory {
             String uui = UUID.randomUUID().toString();
 
             ControllerInterface<?> controller = constructor.newInstance(cp5, uui);
-            LayoutBuilder.ElementProps parentsProps = propertiesInheritance.peek();
 
 
             return controller;
@@ -86,9 +85,8 @@ public class ControllerFactory {
     }
 
 
-    public void configure(ControllerInterface<?> controller, HashMap<String, LayoutBuilder.Attribute<?>> attributes,Deque<LayoutBuilder.ElementProps> propertiesInheritance ) {
+    public void configure(ControllerInterface<?> controller, HashMap<String, LayoutBuilder.Attribute<?>> attributes, Group parent) {
 
-        LayoutBuilder.ElementProps parentsProps = propertiesInheritance.peek();
 
         for (Map.Entry<String, LayoutBuilder.Attribute<?>> entry : attributes.entrySet()) {
             String attrName = entry.getKey();
@@ -113,14 +111,13 @@ public class ControllerFactory {
                         height = controller.getHeight();
                         controller.setSize(width, height);
                     }//if it has a percentage
-                    else if (attribute.getValue() instanceof LayoutBuilder.Percentage){
+                    else if (attribute.getValue() instanceof LayoutBuilder.Percentage) {
                         LayoutBuilder.Percentage percentage = (LayoutBuilder.Percentage) attribute.getValue();
                         float percentageValue = percentage.percentage;
-                        width = (int) ( percentageValue / 100.0f * parentsProps.width);
+                        width = (int) (percentageValue / 100.0f * parent.getWidth());
                         height = controller.getHeight();
                         controller.setSize(width, height);
                     }
-
                 case "height":
                     //if attribute has an int inside
                     if (attribute.getValue() instanceof Integer) {
@@ -129,10 +126,10 @@ public class ControllerFactory {
                         controller.setSize(width, height);
                     }
                     //if it has a percentage
-                    else if (attribute.getValue() instanceof LayoutBuilder.Percentage){
+                    else if (attribute.getValue() instanceof LayoutBuilder.Percentage) {
                         int percentageValue = (int) ((LayoutBuilder.Percentage) attribute.getValue()).percentage;
 
-                        height = (int) ((percentageValue) / 100.0f * parentsProps.height);
+                        height = (int) ((percentageValue) / 100.0f * parent.getHeight());
                         width = controller.getWidth();
                         controller.setSize(width, height);
                     }
@@ -157,13 +154,12 @@ public class ControllerFactory {
                         int b = color.getBlue();
                         int colorInt = (a << 24) | (r << 16) | (g << 8) | b;
                         if (controller instanceof Group) {
-                        ((Group) controller).setBackgroundColor(colorInt);
+                            ((Group) controller).setBackgroundColor(colorInt);
                         }
                     }
 
 
-
-                break;
+                    break;
 //            case "label":
 //                controller.setLabel(attrValue);
 //                break;
@@ -176,6 +172,9 @@ public class ControllerFactory {
 //            case "valueLabel":
 //                controller.getValueLabel().setText(attrValue);
 //                break;
+                case "hideBar":
+                    ((Group) controller).hideBar();
+                    break;
                 default:
                     System.out.println("Unknown attribute: " + attrName);
             }
