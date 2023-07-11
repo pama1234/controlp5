@@ -62,7 +62,7 @@ public class ControllerFactory {
     /* creates  a ControllerInterface based on the controllerTypeName */
     public ControllerInterface<?> createController(String controllerTypeName, Group parent) {
         /* Class of the desired controller */
-        Class<? extends ControllerInterface> controllerClass = controlMap.get(controllerTypeName);
+        Class<? extends ControllerInterface<?>> controllerClass = controlMap.get(controllerTypeName);
 
         if (controllerClass == null) {
             throw new IllegalArgumentException("Invalid control name: " + controllerTypeName);
@@ -70,13 +70,11 @@ public class ControllerFactory {
 
         try {
             //instantiate the controller
-            Constructor<? extends ControllerInterface> constructor = controllerClass.getConstructor(ControlP5.class, String.class);
+            Constructor<? extends ControllerInterface<?>> constructor = controllerClass.getConstructor(ControlP5.class, String.class);
 
             String uui = UUID.randomUUID().toString();
 
-            ControllerInterface<?> controller = constructor.newInstance(cp5, uui);
-
-            return controller;
+            return constructor.newInstance(cp5, uui);
 
         } catch (Exception e) {
             throw new RuntimeException("Failed to create control: " + controllerTypeName, e);

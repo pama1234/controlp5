@@ -21,7 +21,7 @@ import java.util.HashMap;
 public class LayoutBuilder {
     private final ControlP5 _cp5;
     private final PApplet _pApplet;
-    private final Deque<Group> hierarchy = new ArrayDeque<>();
+    private final Deque<ControllerInterface> hierarchy = new ArrayDeque<>();
     private final ControllerFactory _factory;
 
     public LayoutBuilder(PApplet pApplet, ControlP5 cp5) {
@@ -108,17 +108,21 @@ public class LayoutBuilder {
                 attributes.put(attribute.getName(), attribute);
             }
 
-
             Tag tag = new Tag(ctx.Name().getText(), attributes);
-            Group parent = hierarchy.peek();
+
+            Group parent = null;
+            for (ControllerInterface<?> controller : hierarchy) {
+                if (controller instanceof Group) {
+                    parent = (Group) controller;
+                }
+            }
             ControllerInterface<?> controller = _factory.createController(tag.getName(), parent);
 
             _factory.configure(controller, tag.getAttributes(), parent);
             controller.moveTo(parent);
             //push to the inheritance stack
-            if( controller instanceof Group){
-                hierarchy.push((Group) controller);
-            }
+
+            hierarchy.push(controller);
 
 
             return tag;

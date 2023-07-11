@@ -25,24 +25,19 @@ public class Sketch extends PApplet {
         LayoutBuilder builder = new LayoutBuilder(this, cp5);
 
         try {
-//            builder.parseXML("<Window>" +
-//                    "<Group   width=100% height=33%   y=40px  background=rgb(0,223,0)>" + "<Textfield   ></Textfield>"+ "</Group>" +
-//                    "<Button></Button>" +
-//                    "<Group  hideBar width=100% height=33%  y=300px background=rgb(12,0,0)>" +"</Group>" +
-//                    "<Group  hideBar width=100% height=33%  y=600px background=rgb(12,0,223)>" +"</Group>" +
-//                    "<Textfield></Textfield>" +
-//                    "</Window>");
+            builder.parseXML("<Window>" +
+                    "<Group   width=100% height=33%   y=40px  background=rgb(0,223,0)>" + "<Textfield   ></Textfield>"+ "</Group>" +
+                    "<Button></Button>" +
+                    "<Group  hideBar width=100% height=33%  y=300px background=rgb(12,0,0)>" +"</Group>" +
+                    "<Group  hideBar width=100% height=33%  y=600px background=rgb(12,0,223)>" +"</Group>" +
+                    "<Textfield></Textfield>" +
+                    "</Window>");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
 
-        Group  group = cp5.addGroup("group");
 
-        Textfield tf = new Textfield(cp5, "tf");
-        tf.setGroup(group);
-        group.setActiveController(tf);
-        Controller<?> active = group.getActiveController();
 
 
     }
