@@ -78,7 +78,6 @@ public class ControllerFactory {
             ControllerInterface<?> controller = constructor.newInstance(cp5, uui);
 
 
-
             return controller;
 
         } catch (Exception e) {
@@ -88,32 +87,6 @@ public class ControllerFactory {
 
 
     public void configure(ControllerInterface<?> controller, HashMap<String, LayoutBuilder.Attribute<?>> attributes, Group parent) {
-
-        //common configuration that all controllers need
-
-        controller.moveTo(parent);
-
-        Group.Orientation orientation = parent.getOrientation();
-        float[] position = controller.getPosition();
-
-        if (orientation == Group.Orientation.HORIZONTAL) {
-            controller.setPosition(parent.getUsedSpace(), position[1]);
-            if(!(controller instanceof Group)) {
-                parent.addUsedSpace(controller.getWidth());
-            }
-        } else if (orientation == Group.Orientation.VERTICAL) {
-            controller.setPosition(position[0], parent.getUsedSpace());
-            if(!(controller instanceof Group)) {
-                parent.addUsedSpace(controller.getHeight());
-            }
-        }
-
-
-
-
-
-
-
 
         for (Map.Entry<String, LayoutBuilder.Attribute<?>> entry : attributes.entrySet()) {
             String attrName = entry.getKey();
@@ -128,7 +101,6 @@ public class ControllerFactory {
                     break;
                 case "y":
                     int y = (int) attribute.getValue();
-
                     controller.setPosition(controller.getPosition()[0], y);
                     break;
                 case "width":
@@ -196,8 +168,45 @@ public class ControllerFactory {
 //                controller.getValueLabel().setText(attrValue);
 //                break;
                 case "hideBar":
-                    if(controller instanceof Group){
+                    if (controller instanceof Group) {
                         ((Group) controller).hideBar();
+                    }
+                    break;
+                case "orientation":
+                    if (controller instanceof Group) {
+
+                        String orientationString = (String) attribute.getValue();
+                        int orientation = 0;
+                        if (orientationString.equals("horizontal")) {
+                            orientation = 0;
+                        } else if (orientationString.equals("vertical")) {
+                            orientation = 1;
+                        }
+
+                        ((Group) controller).setOrientation(orientation);
+                    } else {
+                        throw new RuntimeException("Orientation can only be set on a Group. " + controller);
+                    }
+                    break;
+                case "position":
+                    //auto positioning system
+                    String attrValue = (String) attribute.getValue();
+                    if(attrValue.equals("auto")){
+                        int orientation = parent.getOrientation();
+                        float[] position = controller.getPosition();
+                        int[] usedSpace = parent.getUsedSpace();
+//
+                        if (orientation == 0) {  // Horizontal
+                            controller.setPosition(usedSpace[0], position[1]);
+                            if (!(controller instanceof Group)) {
+                                parent.addUsedSpace(controller.getWidth(), 0);
+                            }
+                        } else if (orientation == 1) {  // Vertical
+                            controller.setPosition(position[0], usedSpace[1]);
+                            if (!(controller instanceof Group)) {
+                                parent.addUsedSpace(0, controller.getHeight());
+                            }
+                        }
                     }
                     break;
                 default:
@@ -206,24 +215,10 @@ public class ControllerFactory {
 
         }
 
+        controller.moveTo(parent);
+
 
     }
 
-    private int getValue(XMLParser.ValueContext ctx) {
-        String unit = ctx.UNIT().getText();
-        String value = ctx.NUMBER().getText();
 
-        switch (unit) {
-            case "px":
-                return Integer.parseInt(value);
-            case "%":
-                //get tabs
-                ControllerList _myTabs = cp5.getWindow().getTabs();
-
-                return (int) (Float.parseFloat(value) / 100.0f * _myTabs.get(0).getWidth());
-
-            default:
-                throw new IllegalArgumentException("Unknown unit: " + unit);
-        }
-    }
 }

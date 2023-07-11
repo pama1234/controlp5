@@ -110,12 +110,15 @@ public class LayoutBuilder {
 
             Tag tag = new Tag(ctx.Name().getText(), attributes);
 
+            /* get the first object in the hierarchy that is a group*/
             Group parent = null;
             for (ControllerInterface<?> controller : hierarchy) {
                 if (controller instanceof Group) {
                     parent = (Group) controller;
+                    break;
                 }
             }
+
             ControllerInterface<?> controller = _factory.createController(tag.getName(), parent);
 
             _factory.configure(controller, tag.getAttributes(), parent);
@@ -154,6 +157,8 @@ public class LayoutBuilder {
             if (ctx.value().STRING() != null) {
 
                 String value = ctx.value().STRING().getText();
+                //strip quotes
+                value = value.substring(1, value.length() - 1);
                 return new Attribute<String>(name, value);
             }
             //if it px
@@ -173,7 +178,7 @@ public class LayoutBuilder {
             // if its a rgb(r,g,b,)
              if (ctx.value().rgb() != null) {
 
-                int a = 1;
+                int a = 255;
                 int r = Integer.parseInt(ctx.value().rgb().NUMBER(0).getText());
                 int g = Integer.parseInt(ctx.value().rgb().NUMBER(1).getText());
                 int b = Integer.parseInt(ctx.value().rgb().NUMBER(2).getText());
