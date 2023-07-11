@@ -76,7 +76,6 @@ public class ControllerFactory {
 
             ControllerInterface<?> controller = constructor.newInstance(cp5, uui);
 
-
             return controller;
 
         } catch (Exception e) {
@@ -86,7 +85,6 @@ public class ControllerFactory {
 
 
     public void configure(ControllerInterface<?> controller, HashMap<String, LayoutBuilder.Attribute<?>> attributes, Group parent) {
-
 
         for (Map.Entry<String, LayoutBuilder.Attribute<?>> entry : attributes.entrySet()) {
             String attrName = entry.getKey();
@@ -118,6 +116,7 @@ public class ControllerFactory {
                         height = controller.getHeight();
                         controller.setSize(width, height);
                     }
+                    break;
                 case "height":
                     //if attribute has an int inside
                     if (attribute.getValue() instanceof Integer) {
@@ -128,21 +127,16 @@ public class ControllerFactory {
                     //if it has a percentage
                     else if (attribute.getValue() instanceof LayoutBuilder.Percentage) {
                         int percentageValue = (int) ((LayoutBuilder.Percentage) attribute.getValue()).percentage;
-
-                        height = (int) ((percentageValue) / 100.0f * parent.getHeight());
+                        int parentHeight = parent.getBackgroundHeight();
+                        height = (int) ((percentageValue) / 100.0f * parentHeight);
                         width = controller.getWidth();
                         controller.setSize(width, height);
                     }
 
-
                     break;
 //                case "position":
-//                    int[] pos = new int[]{40,40};
-//                    controller.setPosition(pos[0], pos[1]);
 //                    break;
 //                case "size":
-//                    int[] size = new int[]{40,40};
-//                    controller.setSize(1000,500);
 //                    break;
                 case "background":
 //                     if attribute has a color inside
@@ -173,7 +167,9 @@ public class ControllerFactory {
 //                controller.getValueLabel().setText(attrValue);
 //                break;
                 case "hideBar":
-                    ((Group) controller).hideBar();
+                    if(controller instanceof Group){
+                        ((Group) controller).hideBar();
+                    }
                     break;
                 default:
                     System.out.println("Unknown attribute: " + attrName);

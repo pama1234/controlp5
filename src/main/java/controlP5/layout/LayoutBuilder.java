@@ -67,7 +67,7 @@ public class LayoutBuilder {
 
             Group root = _cp5.addGroup("root");
             root.setWidth(parentWidth);
-            root.setHeight(parentHeight);
+            root.setBackgroundHeight(parentHeight);
 
 
             //visit children
@@ -75,7 +75,10 @@ public class LayoutBuilder {
             for (int i = 0; i < ctx.children.size(); i++) {
                 visit(ctx.children.get(i));
             }
-            hierarchy.pop();
+            //if the hierarchy is not empty, pop the last element
+            if (!hierarchy.isEmpty()) {
+                hierarchy.pop();
+            }
 
             return null;
 
@@ -96,11 +99,15 @@ public class LayoutBuilder {
         @Override
         public Object visitStartTag(XMLParser.StartTagContext ctx) {
             if (ctx == null) return null;
+
+
+
             HashMap<String, Attribute<?>> attributes = new HashMap<>();
             for (int i = 0; i < ctx.attribute().size(); i++) {
                 Attribute<?> attribute = (Attribute<?>) visitAttribute(ctx.attribute(i));
                 attributes.put(attribute.getName(), attribute);
             }
+
 
             Tag tag = new Tag(ctx.Name().getText(), attributes);
             Group parent = hierarchy.peek();
@@ -109,7 +116,9 @@ public class LayoutBuilder {
             _factory.configure(controller, tag.getAttributes(), parent);
             controller.moveTo(parent);
             //push to the inheritance stack
-            hierarchy.push((Group) controller);
+            if( controller instanceof Group){
+                hierarchy.push((Group) controller);
+            }
 
 
             return tag;
@@ -121,51 +130,45 @@ public class LayoutBuilder {
         }
 
         public Object visitEndTag(XMLParser.EndTagContext ctx) {
-            hierarchy.pop();
+            if(!hierarchy.isEmpty()){
+                hierarchy.pop();
+            }
             return super.visitEndTag(ctx);
         }
 
         @Override
         public Object visitAttribute(XMLParser.AttributeContext ctx) {
-
+            String name = ctx.Name().getText();
             //value is null means it is a boolean attribute
             if (ctx.value() == null) {
-                String name = ctx.Name().getText();
+
                 return new Attribute<Integer>(name, null);
             }
 
-            if (ctx.value().NUMBER() != null) {
-                String name = ctx.Name().getText();
-                int value = Integer.parseInt(ctx.value().NUMBER().getText());
-                return new Attribute<Integer>(name, value);
-            }
 
+            //string attribute
             if (ctx.value().STRING() != null) {
-                String name = ctx.Name().getText();
+
                 String value = ctx.value().STRING().getText();
                 return new Attribute<String>(name, value);
             }
             //if it px
-            else if (ctx.value().UNIT() != null && ctx.value().UNIT().getText().equals("px")) {
-                String name = ctx.Name().getText();
+             if (ctx.value().UNIT() != null && ctx.value().UNIT().getText().equals("px")) {
+
                 int value = Integer.parseInt(ctx.value().NUMBER().getText());
                 return new Attribute<Integer>(name, value);
             }
-            if (ctx.value().UNIT() != null) {
-                String unit = ctx.value().UNIT().getText();
 
-
-            }
             //if it a percentage
             if (ctx.value().UNIT() != null && ctx.value().UNIT().getText().equals("%")) {
-                String name = ctx.Name().getText();
+
                 int value = Integer.parseInt(ctx.value().NUMBER().getText());
                 Percentage percentage = new Percentage(value);
                 return new Attribute<Percentage>(name, percentage);
             }
             // if its a rgb(r,g,b,)
-            else if (ctx.value().rgb() != null) {
-                String name = ctx.Name().getText();
+             if (ctx.value().rgb() != null) {
+
                 int a = 1;
                 int r = Integer.parseInt(ctx.value().rgb().NUMBER(0).getText());
                 int g = Integer.parseInt(ctx.value().rgb().NUMBER(1).getText());
@@ -175,7 +178,8 @@ public class LayoutBuilder {
                 return new Attribute<Color>(name, c);
             }
 
-            return null;
+             throw new RuntimeException("Error parsing attribute\nAttribute name = " + name);
+//            return null;
         }
 
 

@@ -31,7 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import main.java.controlp5.events.ReleasedOutsideListener;
+import controlP5.events.ReleasedOutsideListener;
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PGraphics;
@@ -76,6 +76,7 @@ import processing.event.KeyEvent;
  * 
  * @example use/ControlP5basics
  */
+@SuppressWarnings("removal")
 public abstract class Controller< T > implements ControllerInterface< T > , CDrawable , ControlP5Constants {
 
 	protected float[] position = new float[ 2 ];
@@ -644,7 +645,6 @@ public abstract class Controller< T > implements ControllerInterface< T > , CDra
 	 * enables a controller to listen to changes made to the variable linked to the controller. Use true to enable and
 	 * false to disable a controller from listening to changes.
 	 * 
-	 * @param theFlag
 	 * @return Controller
 	 */
 	public T listen( boolean theValue ) {
@@ -776,6 +776,10 @@ public abstract class Controller< T > implements ControllerInterface< T > , CDra
 			}
 		}
 		return me;
+	}
+
+	public void setActiveController() {
+		((Group)_myParent).setActiveController(this);
 	}
 
 	/**

@@ -1,6 +1,6 @@
 package controlP5;
 
-import static main.java.controlp5.ControlP5.b;
+import static controlP5.ControlP5.b;
 
 import java.util.ArrayList;
 import java.util.Arrays;

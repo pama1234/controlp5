@@ -31,7 +31,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import main.java.controlp5.events.ReleasedOutsideListener;
+import controlP5.events.ReleasedOutsideListener;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.event.Event;
@@ -286,6 +286,11 @@ public class Textfield extends Controller< Textfield > implements ReleasedOutsid
 	public String getText( ) {
 		return _myTextBuffer.toString( );
 	}
+	//get keymappings
+	public Map< Integer , TextfieldCommand > getKeyMapping(){
+		return keyMapping;
+	}
+
 
 	public Textfield setColor( int theColor ) {
 		getValueLabel( ).setColor( theColor );
