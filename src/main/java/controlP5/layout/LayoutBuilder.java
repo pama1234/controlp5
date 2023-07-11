@@ -119,7 +119,7 @@ public class LayoutBuilder {
             ControllerInterface<?> controller = _factory.createController(tag.getName(), parent);
 
             _factory.configure(controller, tag.getAttributes(), parent);
-            controller.moveTo(parent);
+
             //push to the inheritance stack
 
             hierarchy.push(controller);

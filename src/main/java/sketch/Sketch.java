@@ -5,6 +5,11 @@ import controlP5.*;
 import controlP5.layout.LayoutBuilder;
 import processing.core.PApplet;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 
 public class Sketch extends PApplet {
 
@@ -24,14 +29,11 @@ public class Sketch extends PApplet {
 
         LayoutBuilder builder = new LayoutBuilder(this, cp5);
 
+
         try {
-            builder.parseXML("<Window>" +
-                    "<Group   width=100% height=33%   y=40px  background=rgb(0,223,0)>" + "<Textfield   ></Textfield>"+ "</Group>" +
-                    "<Button></Button>" +
-                    "<Group  hideBar width=100% height=33%  y=300px background=rgb(12,0,0)>" +"</Group>" +
-                    "<Group  hideBar width=100% height=33%  y=600px background=rgb(12,0,223)>" +"</Group>" +
-                    "<Textfield></Textfield>" +
-                    "</Window>");
+            Path xmlPath = Paths.get("src/main/resources/test.xml");
+            String xmlContent = new String(Files.readAllBytes(xmlPath));
+            builder.parseXML(xmlContent);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

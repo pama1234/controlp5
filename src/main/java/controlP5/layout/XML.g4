@@ -10,7 +10,7 @@ startTag  : OPEN Name  attribute* CLOSE ;
 
 endTag    : OPEN_SLASH Name CLOSE ;
 
-content   : element | STRING ;
+content   : element+ | STRING ;
 
 SELF_CLOSING : OPEN Name SLASH_CLOSE ;
 

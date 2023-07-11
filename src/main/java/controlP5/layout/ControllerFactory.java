@@ -8,6 +8,7 @@ import processing.core.PApplet;
 import java.awt.Color;
 import java.lang.reflect.Constructor;
 import java.util.*;
+import java.util.function.Function;
 
 public class ControllerFactory {
     private final PApplet applet;
@@ -74,7 +75,11 @@ public class ControllerFactory {
 
             String uui = UUID.randomUUID().toString();
 
-            return constructor.newInstance(cp5, uui);
+            ControllerInterface<?> controller = constructor.newInstance(cp5, uui);
+
+
+
+            return controller;
 
         } catch (Exception e) {
             throw new RuntimeException("Failed to create control: " + controllerTypeName, e);
@@ -83,6 +88,32 @@ public class ControllerFactory {
 
 
     public void configure(ControllerInterface<?> controller, HashMap<String, LayoutBuilder.Attribute<?>> attributes, Group parent) {
+
+        //common configuration that all controllers need
+
+        controller.moveTo(parent);
+
+        Group.Orientation orientation = parent.getOrientation();
+        float[] position = controller.getPosition();
+
+        if (orientation == Group.Orientation.HORIZONTAL) {
+            controller.setPosition(parent.getUsedSpace(), position[1]);
+            if(!(controller instanceof Group)) {
+                parent.addUsedSpace(controller.getWidth());
+            }
+        } else if (orientation == Group.Orientation.VERTICAL) {
+            controller.setPosition(position[0], parent.getUsedSpace());
+            if(!(controller instanceof Group)) {
+                parent.addUsedSpace(controller.getHeight());
+            }
+        }
+
+
+
+
+
+
+
 
         for (Map.Entry<String, LayoutBuilder.Attribute<?>> entry : attributes.entrySet()) {
             String attrName = entry.getKey();
