@@ -22,7 +22,10 @@ attribute : Name EQUALS value
 
 value: STRING
      | NUMBER UNIT
-     | rgb;
+     | rgb
+     | vector;
+
+vector: '(' NUMBER ',' NUMBER ')';
 
 rgb: 'rgb' '(' NUMBER ',' NUMBER ',' NUMBER ')';
 

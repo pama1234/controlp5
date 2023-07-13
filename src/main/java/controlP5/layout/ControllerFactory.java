@@ -95,6 +95,7 @@ public class ControllerFactory {
             int width = 0;
             int height = 0;
             switch (attrName) {
+
                 case "x":
                     int x = (int) attribute.getValue();
                     controller.setPosition(x, controller.getPosition()[1]);
@@ -192,30 +193,58 @@ public class ControllerFactory {
                     //auto positioning system
                     String attrValue = (String) attribute.getValue();
                     if(attrValue.equals("auto")){
-                        int orientation = parent.getOrientation();
-                        float[] position = controller.getPosition();
-                        int[] usedSpace = parent.getUsedSpace();
-//
-                        if (orientation == 0) {  // Horizontal
-                            controller.setPosition(usedSpace[0], position[1]);
-                            if (!(controller instanceof Group)) {
-                                parent.addUsedSpace(controller.getWidth(), 0);
-                            }
-                        } else if (orientation == 1) {  // Vertical
-                            controller.setPosition(position[0], usedSpace[1]);
-                            if (!(controller instanceof Group)) {
-                                parent.addUsedSpace(0, controller.getHeight());
-                            }
-                        }
+                        //
                     }
+                    break;
+                case "grid":
+                    if(!(controller instanceof Matrix)){
+                        throw new RuntimeException("Grid can only be set on a Matrix. " + controller);
+                    }
+                    int[] vector = (int[]) attribute.getValue();
+                    ((Matrix) controller).setGrid(vector[0],vector[1]);
                     break;
                 default:
                     System.out.println("Unknown attribute: " + attrName);
             }
 
+
+
+
         }
 
+
+        //auto positioning system
         controller.moveTo(parent);
+        int orientation = parent.getOrientation();
+        float[] position = controller.getPosition();
+        int[] usedSpace = parent.getUsedSpace();
+//
+        if (orientation == 0) {  // Horizontal
+            controller.setPosition(usedSpace[0], position[1]);
+            parent.addUsedSpace(controller.getWidth(), 0);
+
+        } else if (orientation == 1) {  // Vertical
+            controller.setPosition(position[0], usedSpace[1]);
+            int height;
+            if(controller instanceof Group){
+                height = ((Group) controller).getBackgroundHeight();
+            }else{
+                height = controller.getHeight();
+            }
+            parent.addUsedSpace(0, height);
+        }
+
+        if(attributes.containsKey("padding")){
+
+            if (controller instanceof Group){
+                float[] p = controller.getPosition();
+
+                int padding = 10;
+                controller.setPosition(p[0] + padding,p[1] + padding);
+                ((Group) controller).setWidth(controller.getWidth() - padding*2);
+                ((Group) controller).setBackgroundHeight(((Group) controller).getBackgroundHeight() - padding*2);
+            }
+        }
 
 
     }

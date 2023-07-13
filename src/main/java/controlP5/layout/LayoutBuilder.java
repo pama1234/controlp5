@@ -14,6 +14,7 @@ import processing.core.PApplet;
 
 import java.awt.*;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 
@@ -101,7 +102,6 @@ public class LayoutBuilder {
             if (ctx == null) return null;
 
 
-
             HashMap<String, Attribute<?>> attributes = new HashMap<>();
             for (int i = 0; i < ctx.attribute().size(); i++) {
                 Attribute<?> attribute = (Attribute<?>) visitAttribute(ctx.attribute(i));
@@ -137,7 +137,7 @@ public class LayoutBuilder {
         }
 
         public Object visitEndTag(XMLParser.EndTagContext ctx) {
-            if(!hierarchy.isEmpty()){
+            if (!hierarchy.isEmpty()) {
                 hierarchy.pop();
             }
             return super.visitEndTag(ctx);
@@ -162,7 +162,7 @@ public class LayoutBuilder {
                 return new Attribute<String>(name, value);
             }
             //if it px
-             if (ctx.value().UNIT() != null && ctx.value().UNIT().getText().equals("px")) {
+            if (ctx.value().UNIT() != null && ctx.value().UNIT().getText().equals("px")) {
 
                 int value = Integer.parseInt(ctx.value().NUMBER().getText());
                 return new Attribute<Integer>(name, value);
@@ -176,7 +176,7 @@ public class LayoutBuilder {
                 return new Attribute<Percentage>(name, percentage);
             }
             // if its a rgb(r,g,b,)
-             if (ctx.value().rgb() != null) {
+            if (ctx.value().rgb() != null) {
 
                 int a = 255;
                 int r = Integer.parseInt(ctx.value().rgb().NUMBER(0).getText());
@@ -186,11 +186,23 @@ public class LayoutBuilder {
                 Color c = new Color(r, g, b, a);
                 return new Attribute<Color>(name, c);
             }
+            if (ctx.value().vector() != null) {
+                int[] vector = (int[]) visitVector(ctx.value().vector());
+                return new Attribute<int[]>(name, vector);
+            }
 
-             throw new RuntimeException("Error parsing attribute\nAttribute name = " + name);
+            throw new RuntimeException("Error parsing attribute\nAttribute name = " + name);
 //            return null;
         }
 
+        public int[] visitVector(XMLParser.VectorContext ctx) {
+            ArrayList<Integer> vector = new ArrayList<Integer>();
+            for (int i = 0; i < ctx.NUMBER().size(); i++) {
+                vector.add(Integer.parseInt(ctx.NUMBER(i).getText()));
+
+            }
+            return vector.stream().mapToInt(i -> i).toArray();
+        }
 
     }
 
