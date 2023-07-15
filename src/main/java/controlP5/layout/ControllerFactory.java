@@ -4,11 +4,15 @@ import controlP5.*;
 
 import controlP5.layout.lang.XMLParser;
 import processing.core.PApplet;
+import processing.core.PGraphics;
+import processing.core.PImage;
 
 import java.awt.Color;
 import java.lang.reflect.Constructor;
 import java.util.*;
 import java.util.function.Function;
+
+import static controlP5.ControlP5Constants.MULTIPLES;
 
 public class ControllerFactory {
     private final PApplet applet;
@@ -87,6 +91,7 @@ public class ControllerFactory {
 
 
     public void configure(ControllerInterface<?> controller, HashMap<String, LayoutBuilder.Attribute<?>> attributes, Group parent) {
+
 
         for (Map.Entry<String, LayoutBuilder.Attribute<?>> entry : attributes.entrySet()) {
             String attrName = entry.getKey();
@@ -210,11 +215,22 @@ public class ControllerFactory {
                     }
                     int[] vector = (int[]) attribute.getValue();
                     ((Matrix) controller).setGrid(vector[0],vector[1]);
+                    ((Matrix) controller).setMode(MULTIPLES);
                     break;
                 case "name":
 
                     break;
                 case "padding":
+                    break;
+                case "icon":
+                    if(!(controller instanceof Button)) throw new RuntimeException("Icon can only be set on a Button. " + controller);
+                    String iconName = (String) attribute.getValue();
+                    PImage normal = cp5.papplet.loadImage(String.format("src/main/resources/icons/%s-normal.png",iconName));
+                    PImage hover = cp5.papplet.loadImage(String.format("src/main/resources/icons/%s-hover.png",iconName));
+                    PImage active = cp5.papplet.loadImage(String.format("src/main/resources/icons/%s-active.png",iconName));
+
+                    ((Button)controller).setPosition(50, 50).setImages(normal, hover, active);
+
                     break;
                 default:
                     System.out.println("Unknown attribute: " + attrName);
