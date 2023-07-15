@@ -211,6 +211,11 @@ public class ControllerFactory {
                     int[] vector = (int[]) attribute.getValue();
                     ((Matrix) controller).setGrid(vector[0],vector[1]);
                     break;
+                case "name":
+
+                    break;
+                case "padding":
+                    break;
                 default:
                     System.out.println("Unknown attribute: " + attrName);
             }
