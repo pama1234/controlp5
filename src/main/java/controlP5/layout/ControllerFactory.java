@@ -255,7 +255,7 @@ public class ControllerFactory {
                 ((Group) controller).setBackgroundHeight(((Group) controller).getBackgroundHeight() - padding*2);
             }
         }
-
+        controller.updateAbsolutePosition();
         controller.moveTo(parent);
 
 
