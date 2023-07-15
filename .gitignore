@@ -10,5 +10,9 @@
 .classpath
 .project
 ./out/
-./target/
-target/
+
+# Ignore all .class files
+*.class
+
+# Ignore everything in the target directory
+/target/
