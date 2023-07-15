@@ -31,7 +31,7 @@ public class Sketch extends PApplet {
 
 
         try {
-            Path xmlPath = Paths.get("src/main/resources/test.xml");
+            Path xmlPath = Paths.get("src/main/resources/test.xxml");
             String xmlContent = new String(Files.readAllBytes(xmlPath));
             builder.parseXML(xmlContent);
         } catch (Exception e) {

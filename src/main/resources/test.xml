@@ -1,6 +1,0 @@
-<Window>
-    <Group height=200px width=100% background=rgb(0,0,0) orientation="horizontal">
-    <Textfield></Textfield>
-    <Textfield></Textfield>
-</Group>
-</Window>

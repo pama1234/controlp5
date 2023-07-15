@@ -1,0 +1,30 @@
+<Window>
+    <Group hideBar x=0px y=0px height=100% width=100% background=rgb(0,0,0) orientation="vertical">
+        <Group hideBar height=10% width=100% background=rgb(2,123,0) orientation="horizontal">
+            <Button height=100%></Button> <Textfield  height=100%></Textfield>
+        </Group>
+        <Group hideBar height=60% width=100% background=rgb(123,123,0) orientation="horizontal">
+            <Group name="canvas" hideBar height=100% width=75% background=rgb(34,46,57) padding>
+
+            </Group>
+            <Group height=100% width=25% background=rgb(123,123,244) hideBar orientation="vertical">
+                <Button width=100%></Button>
+                <Button width=100%></Button>
+
+                <Knob></Knob>
+                <Knob></Knob>
+
+
+            </Group>
+        </Group>
+        <Group hideBar height=40% width=100% background=rgb(123,3,0) orientation="horizontal">
+            <Group width=50% height=100% orientation="horizontal">
+
+            </Group>
+            <Group width=50% height=100%>
+                <MultilineTextfield height=100% width=100%>
+                </MultilineTextfield>
+            </Group>
+        </Group>
+    </Group>
+</Window>

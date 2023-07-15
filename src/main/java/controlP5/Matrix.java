@@ -122,12 +122,12 @@ public class Matrix extends Controller< Matrix > {
 
 		if ( getIsInside( ) ) {
 			if ( isPressed ) {
-				int tX = ( int ) ( ( theApplet.mouseX - x( position ) ) / stepX );
-				int tY = ( int ) ( ( theApplet.mouseY - y( position ) ) / stepY );
+				int tX = ( int ) ( ( theApplet.mouseX - x( absolutePosition ) ) / stepX );
+				int tY = ( int ) ( ( theApplet.mouseY - y( absolutePosition ) ) / stepY );
 
 				if ( tX != currentX || tY != currentY ) {
-					tX = PApplet.min( PApplet.max( 0 , tX ) , _myCellX );
-					tY = PApplet.min( PApplet.max( 0 , tY ) , _myCellY );
+					tX = PApplet.min( PApplet.max( 0 , tX ) , _myCellX -1);
+					tY = PApplet.min( PApplet.max( 0 , tY ) , _myCellY -1);
 					boolean isMarkerActive = ( _myCells[ tX ][ tY ] == 1 ) ? true : false;
 					switch ( _myMode ) {
 					default:

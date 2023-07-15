@@ -126,6 +126,8 @@ public class ControlGroup< T > extends ControllerGroup< T > implements ControlLi
 		return _myHeight;
 	}
 
+
+
 	@Override
 	public T updateInternalEvents( PApplet theApplet ) {
 		if ( isInside && isBarVisible ) {

@@ -26,11 +26,10 @@ package controlP5;
  */
 public class Group extends ControlGroup< Group > {
 
-	public enum Orientation {
-		HORIZONTAL , VERTICAL
-	};
-	private Orientation _orientation = Orientation.VERTICAL;
-	private int _usedSpace = 0;
+
+	private int _orientation = 0;
+	//used space in both X and Y axis
+	private int _usedSpace[] = new int[2];
 	/**
 	 * Convenience constructor to extend Group.
 	 * 
@@ -45,28 +44,28 @@ public class Group extends ControlGroup< Group > {
 		super( theControlP5 , theParent , theName , theX , theY , theW , theH );
 	}
 
-	public Group setOrientation( Orientation theOrientation ) {
+	public Group setOrientation( int theOrientation ) {
 		this._orientation = theOrientation;
         return this;
 	}
-	public Orientation getOrientation() {
+	public int getOrientation() {
 		return _orientation;
 	}
 
-	public Group addUsedSpace( int theUsedSpace ) {
-		this._usedSpace += theUsedSpace;
+	public Group addUsedSpace( int x,int y ) {
+		this._usedSpace[0] += x;
+		this._usedSpace[1] += y;
         return this;
 	}
-	public Group setUsedSpace( int theUsedSpace ) {
+	public Group setUsedSpace( int[] theUsedSpace ) {
 		this._usedSpace = theUsedSpace;
         return this;
 	};
 
-	public int getUsedSpace() {
+
+
+	public int[] getUsedSpace() {
 		return _usedSpace;
 	}
-	public Group removeUsedSpace( int theUsedSpace ) {
-		this._usedSpace -= theUsedSpace;
-        return this;
-	}
+
 }
