@@ -109,13 +109,21 @@ public class ControllerFactory {
                     if (attribute.getValue() instanceof Integer) {
                         width = (int) attribute.getValue();
                         height = controller.getHeight();
+                        if(controller instanceof Group){
+                            height = ((Group) controller).getBackgroundHeight();
+                        }
                         controller.setSize(width, height);
                     }//if it has a percentage
                     else if (attribute.getValue() instanceof LayoutBuilder.Percentage) {
                         LayoutBuilder.Percentage percentage = (LayoutBuilder.Percentage) attribute.getValue();
                         float percentageValue = percentage.percentage;
                         width = (int) (percentageValue / 100.0f * parent.getWidth());
-                        height = controller.getHeight();
+                        height = 0;
+                        if( controller instanceof Group){
+                            height = ((Group) controller).getBackgroundHeight();
+                        }else{
+                            height = controller.getHeight();
+                        }
                         controller.setSize(width, height);
                     }
                     break;
@@ -214,37 +222,41 @@ public class ControllerFactory {
 
 
         //auto positioning system
-        controller.moveTo(parent);
-        int orientation = parent.getOrientation();
-        float[] position = controller.getPosition();
-        int[] usedSpace = parent.getUsedSpace();
+
+//        int orientation = parent.getOrientation();
+//        float[] position = controller.getPosition();
+//        int[] usedSpace = parent.getUsedSpace();
+////
+//        if (orientation == 0) {  // Horizontal
+//            controller.setPosition(usedSpace[0], position[1]);
+//            parent.addUsedSpace(controller.getWidth(), 0);
 //
-        if (orientation == 0) {  // Horizontal
-            controller.setPosition(usedSpace[0], position[1]);
-            parent.addUsedSpace(controller.getWidth(), 0);
+//        } else if (orientation == 1) {  // Vertical
+//            controller.setPosition(position[0], usedSpace[1]);
+//            int height;
+//            if(controller instanceof Group){
+//                height = ((Group) controller).getBackgroundHeight();
+//            }else{
+//                height = controller.getHeight();
+//            }
+//            parent.addUsedSpace(0, height);
+//        }
+//
+//
+//
+//        if(attributes.containsKey("padding")){
+//
+//            if (controller instanceof Group){
+//                float[] p = controller.getPosition();
+//
+//                int padding = 10;
+//                controller.setPosition(p[0] + padding,p[1] + padding);
+//                ((Group) controller).setWidth(controller.getWidth() - padding*2);
+//                ((Group) controller).setBackgroundHeight(((Group) controller).getBackgroundHeight() - padding*2);
+//            }
+//        }
 
-        } else if (orientation == 1) {  // Vertical
-            controller.setPosition(position[0], usedSpace[1]);
-            int height;
-            if(controller instanceof Group){
-                height = ((Group) controller).getBackgroundHeight();
-            }else{
-                height = controller.getHeight();
-            }
-            parent.addUsedSpace(0, height);
-        }
-
-        if(attributes.containsKey("padding")){
-
-            if (controller instanceof Group){
-                float[] p = controller.getPosition();
-
-                int padding = 10;
-                controller.setPosition(p[0] + padding,p[1] + padding);
-                ((Group) controller).setWidth(controller.getWidth() - padding*2);
-                ((Group) controller).setBackgroundHeight(((Group) controller).getBackgroundHeight() - padding*2);
-            }
-        }
+        controller.moveTo(parent);
 
 
     }

@@ -13,10 +13,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import processing.core.PApplet;
 
 import java.awt.*;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.HashMap;
+import java.util.*;
 
 
 public class LayoutBuilder {
@@ -102,7 +99,7 @@ public class LayoutBuilder {
             if (ctx == null) return null;
 
 
-            HashMap<String, Attribute<?>> attributes = new HashMap<>();
+            LinkedHashMap<String, Attribute<?>> attributes = new LinkedHashMap<>();
             for (int i = 0; i < ctx.attribute().size(); i++) {
                 Attribute<?> attribute = (Attribute<?>) visitAttribute(ctx.attribute(i));
                 attributes.put(attribute.getName(), attribute);
