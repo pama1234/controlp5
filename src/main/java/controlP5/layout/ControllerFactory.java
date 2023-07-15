@@ -223,38 +223,38 @@ public class ControllerFactory {
 
         //auto positioning system
 
-//        int orientation = parent.getOrientation();
-//        float[] position = controller.getPosition();
-//        int[] usedSpace = parent.getUsedSpace();
-////
-//        if (orientation == 0) {  // Horizontal
-//            controller.setPosition(usedSpace[0], position[1]);
-//            parent.addUsedSpace(controller.getWidth(), 0);
+        int orientation = parent.getOrientation();
+        float[] position = controller.getPosition();
+        int[] usedSpace = parent.getUsedSpace();
 //
-//        } else if (orientation == 1) {  // Vertical
-//            controller.setPosition(position[0], usedSpace[1]);
-//            int height;
-//            if(controller instanceof Group){
-//                height = ((Group) controller).getBackgroundHeight();
-//            }else{
-//                height = controller.getHeight();
-//            }
-//            parent.addUsedSpace(0, height);
-//        }
-//
-//
-//
-//        if(attributes.containsKey("padding")){
-//
-//            if (controller instanceof Group){
-//                float[] p = controller.getPosition();
-//
-//                int padding = 10;
-//                controller.setPosition(p[0] + padding,p[1] + padding);
-//                ((Group) controller).setWidth(controller.getWidth() - padding*2);
-//                ((Group) controller).setBackgroundHeight(((Group) controller).getBackgroundHeight() - padding*2);
-//            }
-//        }
+        if (orientation == 0) {  // Horizontal
+            controller.setPosition(usedSpace[0], position[1]);
+            parent.addUsedSpace(controller.getWidth(), 0);
+
+        } else if (orientation == 1) {  // Vertical
+            controller.setPosition(position[0], usedSpace[1]);
+            int height;
+            if(controller instanceof Group){
+                height = ((Group) controller).getBackgroundHeight();
+            }else{
+                height = controller.getHeight();
+            }
+            parent.addUsedSpace(0, height);
+        }
+
+
+
+        if(attributes.containsKey("padding")){
+
+            if (controller instanceof Group){
+                float[] p = controller.getPosition();
+
+                int padding = 10;
+                controller.setPosition(p[0] + padding,p[1] + padding);
+                ((Group) controller).setWidth(controller.getWidth() - padding*2);
+                ((Group) controller).setBackgroundHeight(((Group) controller).getBackgroundHeight() - padding*2);
+            }
+        }
 
         controller.moveTo(parent);
 
