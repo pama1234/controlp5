@@ -13,6 +13,8 @@
 
 # Ignore all .class files
 *.class
+*.DS_Store
 
 # Ignore everything in the target directory
 /target/
+
