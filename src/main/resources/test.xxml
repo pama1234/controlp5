@@ -1,13 +1,16 @@
 <Window>
-    <Group y=0px x=0px hideBar x=0px y=0px height=100% width=100% background=rgb(0,0,0) orientation="vertical">
-        <Group hideBar height=10% width=100% background=rgb(30,30,30) orientation="horizontal">
-            <Button icon="play" height=100%></Button> <Textfield  height=100%></Textfield>
+    <Group y=0px x=0px hideBar x=0px y=0px height=100% width=100% background=rgb(30,30,30) orientation="vertical">
+        <Group hideBar height=10% width=100% background=rgb(30,30,30) orientation="horizontal" padding>
+            <Button icon="play" height=100%></Button>
+             <Textfield name="BPM" width=50px background=rgb(30,30,30) height=100%></Textfield>
+             <Textfield width=50px height=100% background=rgb(30,30,30) ></Textfield>
+
         </Group>
-        <Group hideBar height=60% width=100% background=rgb(123,123,0) orientation="horizontal">
-            <Group name="canvas" hideBar height=100% width=75% background=rgb(34,46,57) padding>
+        <Group hideBar height=60% width=100% background=rgb(30,30,30) orientation="horizontal">
+            <Group name="canvas" hideBar height=100% width=75% background=rgb(34,46,57) >
 
             </Group>
-            <Group height=100% width=25% background=rgb(123,123,244) hideBar>
+            <Group height=100% width=25% background=rgb(30,30,30) hideBar>
                 <Button width=100%></Button>
                 <Button width=100%></Button>
                 <Button width=100%></Button>
@@ -22,11 +25,11 @@
 
             </Group>
         </Group>
-        <Group hideBar height=40% width=100% background=rgb(123,3,0) orientation="horizontal">
-            <Group width=50% height=100% orientation="horizontal">
-                <Matrix width=100% height=100%></Matrix gridX=40>
+        <Group hideBar height=30% width=100% background=rgb(30,30,30) orientation="horizontal" >
+            <Group width=50% height=100% orientation="horizontal" padding>
+                <Matrix width=500px height=200px grid=(32,12)></Matrix >
             </Group>
-            <Group width=50% height=100%>
+            <Group width=50% height=100% padding >
                 <MultilineTextfield height=100% width=100%>
                 </MultilineTextfield>
             </Group>

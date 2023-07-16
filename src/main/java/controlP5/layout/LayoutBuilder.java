@@ -215,9 +215,9 @@ public class LayoutBuilder {
 
     private class Tag {
         private String name;
-        private HashMap<String, Attribute<?>> attributes;
+        private LinkedHashMap<String, Attribute<?>> attributes;
 
-        public Tag(String name, HashMap<String, Attribute<?>> attributes) {
+        public Tag(String name, LinkedHashMap<String, Attribute<?>> attributes) {
             this.name = name;
             this.attributes = attributes;
         }
@@ -226,7 +226,7 @@ public class LayoutBuilder {
             return name;
         }
 
-        public HashMap<String, Attribute<?>> getAttributes() {
+        public LinkedHashMap<String, Attribute<?>> getAttributes() {
             return attributes;
         }
     }

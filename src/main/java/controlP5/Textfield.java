@@ -63,6 +63,7 @@ public class Textfield extends Controller< Textfield > implements ReleasedOutsid
 	protected Map< Integer , TextfieldCommand > keyMapping;
 	protected InputFilter _myInputFilter = InputFilter.BITFONT;
 	protected List< Integer > ignorelist;
+	protected int TEXTALIGN = 1;
 	protected LinkedList< String > _myHistory;
 	protected int _myHistoryIndex;
 	protected int len = 0;
@@ -328,16 +329,33 @@ public class Textfield extends Controller< Textfield > implements ReleasedOutsid
 		final int dif = PApplet.max( textWidth - _myValueLabel.getWidth( ) , 0 );
 		final int _myTextBufferIndexPosition = ControlFont.getWidthFor( text.substring( 0 , _myTextBufferIndex ) , _myValueLabel , buffer );
 		_myValueLabel.setText( text );
-		_myValueLabel.draw( buffer , -dif , 0 , this );
-		buffer.noStroke( );
-		if ( isTexfieldActive ) {
-			if ( !cp5.papplet.keyPressed ) {
-				buffer.fill( _myColorCursor , PApplet.abs( PApplet.sin( cp5.papplet.frameCount * 0.05f )) * 255 );
-			} else {
-				buffer.fill( _myColorCursor );
+
+		if (TEXTALIGN == 0) { // Left align.
+			_myValueLabel.draw( buffer , -dif + 5 , 0 , this );
+			buffer.noStroke( );
+			if ( isTexfieldActive ) {
+				if ( !cp5.papplet.keyPressed ) {
+					buffer.fill( _myColorCursor , PApplet.abs( PApplet.sin( cp5.papplet.frameCount * 0.05f )) * 255 );
+				} else {
+					buffer.fill( _myColorCursor );
+				}
+				buffer.rect( PApplet.max( 1 , PApplet.min( _myTextBufferIndexPosition , _myValueLabel.getWidth( ) - 3 ) ) , 0 , 1 , getHeight( ) );
 			}
-			buffer.rect( PApplet.max( 1 , PApplet.min( _myTextBufferIndexPosition , _myValueLabel.getWidth( ) - 3 ) ) , 0 , 1 , getHeight( ) );
+		} else if (TEXTALIGN == 1) { // Center align.
+			int centerPoint = getWidth() / 2;
+			int textShift = centerPoint - textWidth / 2;
+			_myValueLabel.draw( buffer , textShift, 0 , this );
+			buffer.noStroke( );
+			if ( isTexfieldActive ) {
+				if ( !cp5.papplet.keyPressed ) {
+					buffer.fill( _myColorCursor , PApplet.abs( PApplet.sin( cp5.papplet.frameCount * 0.05f )) * 255 );
+				} else {
+					buffer.fill( _myColorCursor );
+				}
+				buffer.rect( PApplet.max( 1 + textShift, PApplet.min( _myTextBufferIndexPosition + textShift, _myValueLabel.getWidth() - 3 + textShift)), 0, 1, getHeight());
+			}
 		}
+
 		buffer.endDraw( );
 		theGraphics.image( buffer , 0 , 0 );
 

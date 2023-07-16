@@ -182,8 +182,8 @@ public abstract class Controller< T > implements ControllerInterface< T > , CDra
 		_myControlListener = new ArrayList< ControlListener >( );
 		subelements = new ArrayList< Controller< ? >>( );
 		_myArrayValue = new float[ 0 ];
-		_myDebugView = new DebugView( );
-		setView( _myDebugView );
+		//_myDebugView = new DebugView( );
+		//setView( _myDebugView );
 	}
 
 	List< Controller< ? >> getSubelements( ) {

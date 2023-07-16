@@ -90,8 +90,23 @@ public class ControllerFactory {
     }
 
 
-    public void configure(ControllerInterface<?> controller, HashMap<String, LayoutBuilder.Attribute<?>> attributes, Group parent) {
+    public void configure(ControllerInterface<?> controller, LinkedHashMap<String, LayoutBuilder.Attribute<?>> attributes, Group parent) {
 
+        //default confs
+        if (controller instanceof Controller){
+            ((Controller) controller).getCaptionLabel().hide();
+
+        }else if (controller instanceof Group){
+            ((Group) controller).hideBar();
+        }
+
+
+
+
+        if(controller instanceof Textfield){
+            ((Textfield) controller).setText("120");
+            controller.setColorForeground(cp5.papplet.color(255));
+        }
 
         for (Map.Entry<String, LayoutBuilder.Attribute<?>> entry : attributes.entrySet()) {
             String attrName = entry.getKey();
@@ -164,6 +179,8 @@ public class ControllerFactory {
                         int colorInt = (a << 24) | (r << 16) | (g << 8) | b;
                         if (controller instanceof Group) {
                             ((Group) controller).setBackgroundColor(colorInt);
+                        }else{
+                            controller.setColorBackground(colorInt);
                         }
                     }
 
@@ -216,6 +233,7 @@ public class ControllerFactory {
                     int[] vector = (int[]) attribute.getValue();
                     ((Matrix) controller).setGrid(vector[0],vector[1]);
                     ((Matrix) controller).setMode(MULTIPLES);
+
                     break;
                 case "name":
 
@@ -271,7 +289,7 @@ public class ControllerFactory {
             if (controller instanceof Group){
                 float[] p = controller.getPosition();
 
-                int padding = 10;
+                int padding = 20;
                 controller.setPosition(p[0] + padding,p[1] + padding);
                 ((Group) controller).setWidth(controller.getWidth() - padding*2);
                 ((Group) controller).setBackgroundHeight(((Group) controller).getBackgroundHeight() - padding*2);

@@ -122,8 +122,8 @@ public class Matrix extends Controller< Matrix > {
 
 		if ( getIsInside( ) ) {
 			if ( isPressed ) {
-				int tX = ( int ) ( ( theApplet.mouseX - x( absolutePosition ) ) / stepX );
-				int tY = ( int ) ( ( theApplet.mouseY - y( absolutePosition ) ) / stepY );
+				int tX = (int)(((theApplet.mouseX - x(absolutePosition)) * _myCellX) / getWidth());
+				int tY = (int)(((theApplet.mouseY - y(absolutePosition)) * _myCellY) / getHeight());
 
 				if ( tX != currentX || tY != currentY ) {
 					tX = PApplet.min( PApplet.max( 0 , tX ) , _myCellX -1);
@@ -389,34 +389,37 @@ public class Matrix extends Controller< Matrix > {
 	class MatrixView implements ControllerView< Matrix > {
 
 		public void display( PGraphics theGraphics , Matrix theController ) {
-			theGraphics.noStroke( );
-			theGraphics.fill( bg );
-			theGraphics.rect( 0 , 0 , getWidth( ) , getHeight( ) );
+			theGraphics.noStroke();
+			theGraphics.fill(bg);
+			theGraphics.rect(0 , 0 , getWidth(), getHeight());
 
-			float gx = gapX / 2;
-			float gy = gapY / 2;
-			for ( int x = 0 ; x < _myCellX ; x++ ) {
-				for ( int y = 0 ; y < _myCellY ; y++ ) {
+			float stepX = getWidth() / (float)_myCellX; // cell width based on the controller width and number of cells
+			float stepY = getHeight() / (float)_myCellY; // cell height based on the controller height and number of cells
 
-					theGraphics.fill( _myCells[ x ][ y ] == 1 ? color.getActive( ) : color.getBackground( ) );
-					theGraphics.rect( x * stepX + gx , y * stepY + gy , stepX - gapX , stepY - gapY );
+			for (int x = 0 ; x < _myCellX ; x++ ) {
+				for (int y = 0 ; y < _myCellY ; y++ ) {
+					theGraphics.fill(_myCells[x][y] == 1 ? color.getActive() : color.getBackground());
+					theGraphics.rect(x * stepX, y * stepY, stepX, stepY);
 				}
 			}
-			if ( isInside( ) ) {
+
+			if (isInside()) {
 				// TODO
 				// int x = (int) ((theGraphics.mouseX - position.x) / stepX);
 				// int y = (int) ((theGraphics.mouseY - position.y) / stepY);
 				// if (x >= 0 && x < _myCellX && y >= 0 && y < _myCellY) {
-				// theGraphics.fill(_myCells[x][y] == 1 ? color.getActive() :
-				// color.getForeground());
-				// theGraphics.rect(x * stepX, y * stepY, stepX - gapX, stepY - gapY);
+				//     theGraphics.fill(_myCells[x][y] == 1 ? color.getActive() : color.getForeground());
+				//     theGraphics.rect(x * stepX, y * stepY, stepX, stepY);
 				// }
 			}
-			theGraphics.fill( color.getActive( ) );
-			theGraphics.rect( cnt * stepX , 0 , 1 , getHeight( ) - gapY );
-			if ( isLabelVisible ) {
-				_myCaptionLabel.draw( theGraphics , 0 , 0 , theController );
+
+			theGraphics.fill(color.getActive());
+			theGraphics.rect(cnt * stepX , 0 , 1 , getHeight());
+
+			if (isLabelVisible) {
+				_myCaptionLabel.draw(theGraphics, 0, 0, theController);
 			}
+
 		}
 	}
 }
