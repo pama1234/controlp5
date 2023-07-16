@@ -28,6 +28,7 @@ package controlP5;
  */
 
 import processing.core.PGraphics;
+import processing.core.PImage;
 
 /**
  * <p>
@@ -284,20 +285,27 @@ public class Button extends Controller< Button > {
 
 	private class ButtonImageView implements ControllerView< Button > {
 
-		public void display( PGraphics theGraphics , Button theController ) {
-			if ( isOn && isSwitch ) {
-				theGraphics.image( ( availableImages[ HIGHLIGHT ] == true ) ? images[ HIGHLIGHT ] : images[ DEFAULT ] , 0 , 0 );
-				return;
-			}
-			if ( getIsInside( ) ) {
-				if ( isPressed ) {
-					theGraphics.image( ( availableImages[ ACTIVE ] == true ) ? images[ ACTIVE ] : images[ DEFAULT ] , 0 , 0 );
+		public void display(PGraphics theGraphics, Button theController) {
+			PImage imageToDraw;
+			if (isOn && isSwitch) {
+				imageToDraw = (availableImages[HIGHLIGHT] == true) ? images[HIGHLIGHT] : images[DEFAULT];
+			} else if (getIsInside()) {
+				if (isPressed) {
+					imageToDraw = (availableImages[ACTIVE] == true) ? images[ACTIVE] : images[DEFAULT];
 				} else {
-					theGraphics.image( ( availableImages[ OVER ] == true ) ? images[ OVER ] : images[ DEFAULT ] , 0 , 0 );
+					imageToDraw = (availableImages[OVER] == true) ? images[OVER] : images[DEFAULT];
 				}
 			} else {
-				theGraphics.image( images[ DEFAULT ] , 0 , 0 );
+				imageToDraw = images[DEFAULT];
 			}
+
+			// Calculate the position to center the image
+			float xPos = (theController.getWidth() - imageToDraw.width) / 2.0f;
+			float yPos = (theController.getHeight() - imageToDraw.height) / 2.0f;
+
+			// Draw the image at the calculated position
+			theGraphics.image(imageToDraw, xPos, yPos);
+
 		}
 	}
 

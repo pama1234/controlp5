@@ -1,7 +1,7 @@
 <Window>
     <Group y=0px x=0px hideBar x=0px y=0px height=100% width=100% background=rgb(0,0,0) orientation="vertical">
         <Group hideBar height=10% width=100% background=rgb(30,30,30) orientation="horizontal">
-            <Button icon="start" height=100%></Button> <Textfield  height=100%></Textfield>
+            <Button icon="play" height=100%></Button> <Textfield  height=100%></Textfield>
         </Group>
         <Group hideBar height=60% width=100% background=rgb(123,123,0) orientation="horizontal">
             <Group name="canvas" hideBar height=100% width=75% background=rgb(34,46,57) padding>

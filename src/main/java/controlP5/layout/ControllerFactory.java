@@ -229,7 +229,8 @@ public class ControllerFactory {
                     PImage hover = cp5.papplet.loadImage(String.format("src/main/resources/icons/%s-hover.png",iconName));
                     PImage active = cp5.papplet.loadImage(String.format("src/main/resources/icons/%s-active.png",iconName));
 
-                    ((Button)controller).setPosition(50, 50).setImages(normal, hover, active);
+                    ((Button)controller).setImages(normal, hover, active);
+
 
                     break;
                 default:
