@@ -1,24 +1,45 @@
 package sketch;
 
+
 import controlP5.*;
+import controlP5.layout.LayoutBuilder;
 import processing.core.PApplet;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 
 public class Sketch extends PApplet {
 
-    static public void main (String[] args){
+    static public void main(String[] args) {
 
         PApplet.main("sketch.Sketch");
     }
 
     ControlP5 cp5;
-    public void settings(){
-        size(500,500);
+
+    public void settings() {
+        size(1280, 820);
     }
-    public void setup(){
+
+    public void setup() {
         cp5 = new ControlP5(this);
 
-        Button b = new Button(cp5,"").setSize(100,100);
-        MultilineTextfield ml = new MultilineTextfield(cp5,"mlt");
+        LayoutBuilder builder = new LayoutBuilder(this, cp5);
+
+
+        try {
+            Path xmlPath = Paths.get("src/main/resources/test.xxml");
+            String xmlContent = new String(Files.readAllBytes(xmlPath));
+            builder.parseXML(xmlContent);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+
+
 
 
     }
@@ -26,7 +47,8 @@ public class Sketch extends PApplet {
     public void radioButton(int index) {
 
     }
-    public void draw(){
+
+    public void draw() {
 
     }
 }

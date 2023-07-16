@@ -172,4 +172,6 @@ public interface ControllerInterface< T > {
 	public T addListener( ControlListener theListener );
 
 	public T setCaptionLabel( String theValue );
+
+    Object setSize(int width, int height);
 }

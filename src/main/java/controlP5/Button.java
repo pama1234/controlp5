@@ -50,7 +50,7 @@ public class Button extends Controller< Button > {
 
 	/**
 	 * Convenience constructor to extend Button.
-	 * 
+	 *
 	 * @example use/ControlP5extendController
 	 */
 	public Button( ControlP5 theControlP5 , String theName ) {
@@ -105,7 +105,7 @@ public class Button extends Controller< Button > {
 	/**
 	 * A button can be activated by a mouse PRESSED or mouse
 	 * RELEASE. Default value is RELEASE.
-	 * 
+	 *
 	 * @param theValue use ControlP5.PRESSED or
 	 *            ControlP5.RELEASE as parameter
 	 * @return Button
@@ -134,6 +134,8 @@ public class Button extends Controller< Button > {
 		mouseReleased( );
 	}
 
+
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -153,7 +155,7 @@ public class Button extends Controller< Button > {
 	/**
 	 * Turns a button into a switch, or use a Toggle
 	 * instead.
-	 * 
+	 *
 	 */
 	public Button setSwitch( boolean theFlag ) {
 		isSwitch = theFlag;
@@ -168,9 +170,9 @@ public class Button extends Controller< Button > {
 	/**
 	 * If the button acts as a switch, setOn will turn on
 	 * the switch. Use
-	 * {@link controlP5.Button#setSwitch(boolean) setSwitch}
+	 * {@link Button#setSwitch(boolean) setSwitch}
 	 * to turn a Button into a Switch.
-	 * 
+	 *
 	 * @return Button
 	 */
 	public Button setOn( ) {
@@ -185,9 +187,9 @@ public class Button extends Controller< Button > {
 	/**
 	 * If the button acts as a switch, setOff will turn off
 	 * the switch. Use
-	 * {@link controlP5.Button#setSwitch(boolean) setSwitch}
+	 * {@link Button#setSwitch(boolean) setSwitch}
 	 * to turn a Button into a Switch.
-	 * 
+	 *
 	 * @return Button
 	 */
 	public Button setOff( ) {
@@ -221,8 +223,8 @@ public class Button extends Controller< Button > {
 	 * Returns true or false and indicates the switch state
 	 * of the button. {@link setSwitch(boolean) setSwitch}
 	 * should have been set before.
-	 * 
-	 * @see controlP5.Button#setSwitch(boolean)
+	 *
+	 * @see Button#setSwitch(boolean)
 	 * @return boolean
 	 */
 	public boolean getBooleanValue( ) {
@@ -242,15 +244,15 @@ public class Button extends Controller< Button > {
 	@ControlP5.Invisible public Button updateViewMode( int theMode ) {
 		_myDisplayMode = theMode;
 		switch ( theMode ) {
-		case ( DEFAULT ):
-			_myControllerView = new ButtonView( );
-			break;
-		case ( IMAGE ):
-			_myControllerView = new ButtonImageView( );
-			break;
-		case ( CUSTOM ):
-		default:
-			break;
+			case ( DEFAULT ):
+				_myControllerView = new ButtonView( );
+				break;
+			case ( IMAGE ):
+				_myControllerView = new ButtonImageView( );
+				break;
+			case ( CUSTOM ):
+			default:
+				break;
 
 		}
 		return this;

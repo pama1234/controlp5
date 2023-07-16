@@ -32,7 +32,7 @@ import java.lang.reflect.Field;
  * linked to a controller. The FieldChangedListener is for primarily for
  * internal use.
  * 
- * @see controlP5.Controller#listen(boolean)
+ * @see Controller#listen(boolean)
  */
 class FieldChangedListener {
 

@@ -42,7 +42,7 @@ import java.util.Set;
  * through an instance of the ControlP5 class. Instead of accessing the ControlBroadcaster directly,
  * use the convenience methods available from the ControlP5 class.
  * 
- * @see controlP5.ControlP5#getControlBroadcaster()
+ * @see ControlP5#getControlBroadcaster()
  */
 public class ControlBroadcaster {
 
@@ -87,7 +87,7 @@ public class ControlBroadcaster {
 
 	/**
 	 * Returns a ControlListener by index
-	 * 
+	 *
 	 * @param theIndex
 	 * @return
 	 */
@@ -100,7 +100,7 @@ public class ControlBroadcaster {
 
 	/**
 	 * Returns the size of the ControlListener list
-	 * 
+	 *
 	 * @return
 	 */
 	public int listenerSize( ) {
@@ -121,7 +121,7 @@ public class ControlBroadcaster {
 
 	/**
 	 * Adds a CallbackListener for a list of controllers.
-	 * 
+	 *
 	 * @param theListener
 	 * @param theController
 	 */
@@ -145,7 +145,7 @@ public class ControlBroadcaster {
 
 	/**
 	 * Removes a CallbackListener for a particular controller
-	 * 
+	 *
 	 * @param theController
 	 */
 	public ControlBroadcaster removeCallback( Controller< ? > ... theControllers ) {
@@ -391,7 +391,9 @@ public class ControlBroadcaster {
 			// TODO Auto-generated constructor stub
 		}
 
-		@Override public EmptyController setValue( float theValue ) {
+
+
+		@Override public EmptyController setValue(float theValue ) {
 			// TODO Auto-generated method stub
 			return this;
 		}

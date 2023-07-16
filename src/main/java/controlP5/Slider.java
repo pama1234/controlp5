@@ -636,7 +636,7 @@ public class Slider extends Controller< Slider > {
 	}
 
 	/**
-	 * @see controlP5.Slider#setScrollSensitivity(float)
+	 * @see Slider#setScrollSensitivity(float)
 	 * 
 	 * @param theValue
 	 * @return Slider

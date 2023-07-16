@@ -35,7 +35,7 @@ import processing.core.PGraphics;
  * ControlFonts.
  * 
  * 
- * @see controlP5.ControlFont
+ * @see ControlFont
  * @example controllers/ControlP5Textlabel
  * 
  */

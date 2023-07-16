@@ -460,19 +460,19 @@ public class ScrollableList extends Controller< ScrollableList > implements Cont
 	public void keyEvent( KeyEvent theKeyEvent ) {
 		if ( isInside && theKeyEvent.getAction( ) == KeyEvent.PRESS ) {
 			switch ( theKeyEvent.getKeyCode( ) ) {
-			case ( ControlP5.UP ):
+			case (UP):
 				scroll( theKeyEvent.isAltDown( ) ? -itemIndexOffset : theKeyEvent.isShiftDown( ) ? -10 : -1 );
 				updateHover( );
 				break;
-			case ( ControlP5.DOWN ):
+			case (DOWN):
 				scroll( theKeyEvent.isAltDown( ) ? items.size( ) - itemRange : theKeyEvent.isShiftDown( ) ? 10 : 1 );
 				updateHover( );
 				break;
-			case ( ControlP5.LEFT ):
+			case (LEFT):
 				break;
-			case ( ControlP5.RIGHT ):
+			case (RIGHT):
 				break;
-			case ( ControlP5.ENTER ):
+			case (ENTER):
 				onRelease( );
 				break;
 			}

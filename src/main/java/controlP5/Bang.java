@@ -105,6 +105,8 @@ import processing.core.PGraphics;
 		return triggerId;
 	}
 
+
+
 	/**
 	 * Sets the value of the bang controller. since bang can be true or false, false=0 and true=1
 	 * 

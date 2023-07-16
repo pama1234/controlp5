@@ -33,7 +33,6 @@ import java.util.Map;
 
 import controlP5.events.ReleasedOutsideListener;
 import processing.core.PApplet;
-import processing.core.PFont;
 import processing.core.PGraphics;
 import processing.event.Event;
 import processing.event.KeyEvent;
@@ -113,7 +112,7 @@ public class Textfield extends Controller< Textfield > implements ReleasedOutsid
 
 		_myCaptionLabel = new Label( cp5 , theName , 0 , 0 , color.getCaptionLabel( ) );
 		_myValueLabel.setFont( cp5.controlFont == cp5.defaultFont ? cp5.defaultFontForText : cp5.controlFont );
-		_myCaptionLabel.align( ControlP5.LEFT , ControlP5.BOTTOM_OUTSIDE );
+		_myCaptionLabel.align(LEFT, BOTTOM_OUTSIDE);
 		_myCaptionLabel.setPaddingX( 0 );
 
 		_myBroadcastType = STRING;
@@ -287,6 +286,11 @@ public class Textfield extends Controller< Textfield > implements ReleasedOutsid
 	public String getText( ) {
 		return _myTextBuffer.toString( );
 	}
+	//get keymappings
+	public Map< Integer , TextfieldCommand > getKeyMapping(){
+		return keyMapping;
+	}
+
 
 	public Textfield setColor( int theColor ) {
 		getValueLabel( ).setColor( theColor );
@@ -394,9 +398,7 @@ public class Textfield extends Controller< Textfield > implements ReleasedOutsid
 		return this;
 	}
 
-	interface TextfieldCommand {
-		void execute( );
-	}
+
 
 	class InsertCharacter implements TextfieldCommand {
 

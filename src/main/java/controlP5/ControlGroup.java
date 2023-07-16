@@ -43,7 +43,7 @@ import processing.core.PGraphics;
  * {@link ControllerGroup} documentation.
  * </p>
  * 
- * @see controlP5.Group
+ * @see Group
  * @example controllers/ControlP5group
  */
 public class ControlGroup< T > extends ControllerGroup< T > implements ControlListener {
@@ -79,7 +79,7 @@ public class ControlGroup< T > extends ControllerGroup< T > implements ControlLi
 				isOpen = !isOpen;
 				if ( isEventActive ) {
 					final ControlEvent myEvent = new ControlEvent( this );
-					cp5.getControlBroadcaster( ).broadcast( myEvent , ControlP5Constants.METHOD );
+					cp5.getControlBroadcaster( ).broadcast( myEvent , METHOD);
 					for ( ControlListener cl : _myControlListener ) {
 						cl.controlEvent( myEvent );
 					}
@@ -125,6 +125,8 @@ public class ControlGroup< T > extends ControllerGroup< T > implements ControlLi
 	public int getBarHeight( ) {
 		return _myHeight;
 	}
+
+
 
 	@Override
 	public T updateInternalEvents( PApplet theApplet ) {

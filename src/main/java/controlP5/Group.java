@@ -26,6 +26,10 @@ package controlP5;
  */
 public class Group extends ControlGroup< Group > {
 
+
+	private int _orientation = 0;
+	//used space in both X and Y axis
+	private int _usedSpace[] = new int[2];
 	/**
 	 * Convenience constructor to extend Group.
 	 * 
@@ -38,6 +42,30 @@ public class Group extends ControlGroup< Group > {
 
 	public Group( ControlP5 theControlP5 , ControllerGroup< ? > theParent , String theName , int theX , int theY , int theW , int theH ) {
 		super( theControlP5 , theParent , theName , theX , theY , theW , theH );
+	}
+
+	public Group setOrientation( int theOrientation ) {
+		this._orientation = theOrientation;
+        return this;
+	}
+	public int getOrientation() {
+		return _orientation;
+	}
+
+	public Group addUsedSpace( int x,int y ) {
+		this._usedSpace[0] += x;
+		this._usedSpace[1] += y;
+        return this;
+	}
+	public Group setUsedSpace( int[] theUsedSpace ) {
+		this._usedSpace = theUsedSpace;
+        return this;
+	};
+
+
+
+	public int[] getUsedSpace() {
+		return _usedSpace;
 	}
 
 }
