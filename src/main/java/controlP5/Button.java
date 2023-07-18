@@ -278,7 +278,10 @@ public class Button extends Controller< Button > {
 			}
 			theGraphics.rect( 0 , 0 , getWidth( ) , getHeight( ) );
 			if ( isLabelVisible ) {
+
+				theGraphics.clip(0,0,getWidth(),getHeight());
 				_myCaptionLabel.draw( theGraphics , 0 , 0 , theController );
+				theGraphics.noClip();
 			}
 		}
 	}

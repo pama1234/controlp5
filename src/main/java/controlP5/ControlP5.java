@@ -76,7 +76,7 @@ public class ControlP5 extends ControlP5Base {
 	/**
 	 * @exclude
 	 */
-	@ControlP5.Invisible static CColor color = new CColor( THEME_CP52014 );
+	@ControlP5.Invisible static CColor color = new CColor( THEME_KINESTHESIA );
 
 	/**
 	 * @exclude

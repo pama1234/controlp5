@@ -66,6 +66,7 @@ public class LayoutBuilder {
             Group root = _cp5.addGroup("root");
             root.setWidth(parentWidth);
             root.setBackgroundHeight(parentHeight);
+            root.hideBar();
 
 
             //visit children

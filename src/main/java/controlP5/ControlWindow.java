@@ -456,9 +456,12 @@ public final class ControlWindow {
 	}
 
 	public void keyEvent( KeyEvent theKeyEvent ) {
+		int code = theKeyEvent.getKeyCode( );
+		if(code >= numKeys) return ;
 
 		if ( theKeyEvent.getAction( ) == KeyEvent.PRESS ) {
-			keys[ theKeyEvent.getKeyCode( ) ] = true;
+
+			keys[ code  ] = true;
 			numOfActiveKeys++;
 			cp5.modifiers = theKeyEvent.getModifiers( );
 			key = theKeyEvent.getKey( );
@@ -466,7 +469,7 @@ public final class ControlWindow {
 		}
 
 		if ( theKeyEvent.getAction( ) == KeyEvent.RELEASE ) {
-			keys[ theKeyEvent.getKeyCode( ) ] = false;
+			keys[ code ] = false;
 			numOfActiveKeys--;
 			cp5.modifiers = theKeyEvent.getModifiers( );
 		}
@@ -483,10 +486,10 @@ public final class ControlWindow {
 					c[ n++ ] = ( ( char ) i );
 				}
 			}
-			ControlP5Base.KeyCode code = new ControlP5Base.KeyCode( c );
+			ControlP5Base.KeyCode keyCode = new ControlP5Base.KeyCode( c );
 
-			if ( cp5.keymap.containsKey( code ) ) {
-				for ( ControlKey ck : cp5.keymap.get( code ) ) {
+			if ( cp5.keymap.containsKey( keyCode ) ) {
+				for ( ControlKey ck : cp5.keymap.get( keyCode ) ) {
 					ck.keyEvent( );
 				}
 			}

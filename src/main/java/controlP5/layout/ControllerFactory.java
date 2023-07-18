@@ -1,16 +1,11 @@
 package controlP5.layout;
 
 import controlP5.*;
-
-import controlP5.layout.lang.XMLParser;
 import processing.core.PApplet;
-import processing.core.PGraphics;
 import processing.core.PImage;
-
 import java.awt.Color;
 import java.lang.reflect.Constructor;
 import java.util.*;
-import java.util.function.Function;
 
 import static controlP5.ControlP5Constants.MULTIPLES;
 
@@ -76,12 +71,8 @@ public class ControllerFactory {
         try {
             //instantiate the controller
             Constructor<? extends ControllerInterface<?>> constructor = controllerClass.getConstructor(ControlP5.class, String.class);
-
             String uui = UUID.randomUUID().toString();
-
             ControllerInterface<?> controller = constructor.newInstance(cp5, uui);
-
-
             return controller;
 
         } catch (Exception e) {
@@ -93,20 +84,13 @@ public class ControllerFactory {
     public void configure(ControllerInterface<?> controller, LinkedHashMap<String, LayoutBuilder.Attribute<?>> attributes, Group parent) {
 
         //default confs
-        if (controller instanceof Controller){
+        if (controller instanceof Controller && !(controller instanceof Button)) {
             ((Controller) controller).getCaptionLabel().hide();
 
-        }else if (controller instanceof Group){
+        } else if (controller instanceof Group) {
             ((Group) controller).hideBar();
         }
 
-
-
-
-        if(controller instanceof Textfield){
-            ((Textfield) controller).setText("120");
-            controller.setColorForeground(cp5.papplet.color(255));
-        }
 
         for (Map.Entry<String, LayoutBuilder.Attribute<?>> entry : attributes.entrySet()) {
             String attrName = entry.getKey();
@@ -129,7 +113,7 @@ public class ControllerFactory {
                     if (attribute.getValue() instanceof Integer) {
                         width = (int) attribute.getValue();
                         height = controller.getHeight();
-                        if(controller instanceof Group){
+                        if (controller instanceof Group) {
                             height = ((Group) controller).getBackgroundHeight();
                         }
                         controller.setSize(width, height);
@@ -137,11 +121,11 @@ public class ControllerFactory {
                     else if (attribute.getValue() instanceof LayoutBuilder.Percentage) {
                         LayoutBuilder.Percentage percentage = (LayoutBuilder.Percentage) attribute.getValue();
                         float percentageValue = percentage.percentage;
-                        width = (int) (percentageValue / 100.0f * parent.getWidth());
+                        width = Math.round (percentageValue / 100.0f * parent.getWidth());
                         height = 0;
-                        if( controller instanceof Group){
+                        if (controller instanceof Group) {
                             height = ((Group) controller).getBackgroundHeight();
-                        }else{
+                        } else {
                             height = controller.getHeight();
                         }
                         controller.setSize(width, height);
@@ -156,9 +140,9 @@ public class ControllerFactory {
                     }
                     //if it has a percentage
                     else if (attribute.getValue() instanceof LayoutBuilder.Percentage) {
-                        int percentageValue = (int) ((LayoutBuilder.Percentage) attribute.getValue()).percentage;
+                        float percentageValue =  ((LayoutBuilder.Percentage) attribute.getValue()).percentage;
                         int parentHeight = parent.getBackgroundHeight();
-                        height = (int) ((percentageValue) / 100.0f * parentHeight);
+                        height = Math.round((percentageValue) / 100.0f * parentHeight);
                         width = controller.getWidth();
                         controller.setSize(width, height);
                     }
@@ -179,12 +163,37 @@ public class ControllerFactory {
                         int colorInt = (a << 24) | (r << 16) | (g << 8) | b;
                         if (controller instanceof Group) {
                             ((Group) controller).setBackgroundColor(colorInt);
-                        }else{
+                        } else {
                             controller.setColorBackground(colorInt);
                         }
                     }
-
-
+                    break;
+                case "text":
+                    String text = (String) attribute.getValue();
+                    if (controller instanceof Textlabel) {
+                        ((Textlabel) controller).setText(text);
+                    } else if (controller instanceof Textfield) {
+                        ((Textfield) controller).setText(text);
+                    } else if (controller instanceof Button) {
+                        ((Button) controller).getCaptionLabel().setText(text);
+                    }
+                    break;
+                case "fontSize":
+                    Label label = null;
+                    int size = (int) attribute.getValue();
+                    if(controller instanceof Controller){
+                        if(controller instanceof Textfield)
+                        {
+                        label = ((Controller<?>) controller).getValueLabel();
+                        }else if(controller instanceof Textlabel){
+                            label = ((Textlabel) controller).getValueLabel();
+                        }else {
+                            label = ((Controller<?>) controller).getCaptionLabel();
+                        }
+                    }
+                    if(label != null){
+                        label.setSize(size);
+                    }
                     break;
 //            case "label":
 //                controller.setLabel(attrValue);
@@ -222,16 +231,16 @@ public class ControllerFactory {
                 case "position":
                     //auto positioning system
                     String attrValue = (String) attribute.getValue();
-                    if(attrValue.equals("auto")){
+                    if (attrValue.equals("auto")) {
                         //
                     }
                     break;
                 case "grid":
-                    if(!(controller instanceof Matrix)){
+                    if (!(controller instanceof Matrix)) {
                         throw new RuntimeException("Grid can only be set on a Matrix. " + controller);
                     }
                     int[] vector = (int[]) attribute.getValue();
-                    ((Matrix) controller).setGrid(vector[0],vector[1]);
+                    ((Matrix) controller).setGrid(vector[0], vector[1]);
                     ((Matrix) controller).setMode(MULTIPLES);
 
                     break;
@@ -239,15 +248,17 @@ public class ControllerFactory {
 
                     break;
                 case "padding":
+
                     break;
                 case "icon":
-                    if(!(controller instanceof Button)) throw new RuntimeException("Icon can only be set on a Button. " + controller);
+                    if (!(controller instanceof Button))
+                        throw new RuntimeException("Icon can only be set on a Button. " + controller);
                     String iconName = (String) attribute.getValue();
-                    PImage normal = cp5.papplet.loadImage(String.format("src/main/resources/icons/%s-normal.png",iconName));
-                    PImage hover = cp5.papplet.loadImage(String.format("src/main/resources/icons/%s-hover.png",iconName));
-                    PImage active = cp5.papplet.loadImage(String.format("src/main/resources/icons/%s-active.png",iconName));
+                    PImage normal = cp5.papplet.loadImage(String.format("src/main/resources/icons/%s-normal.png", iconName));
+                    PImage hover = cp5.papplet.loadImage(String.format("src/main/resources/icons/%s-hover.png", iconName));
+                    PImage active = cp5.papplet.loadImage(String.format("src/main/resources/icons/%s-active.png", iconName));
 
-                    ((Button)controller).setImages(normal, hover, active);
+                    ((Button) controller).setImages(normal, hover, active);
 
 
                     break;
@@ -256,13 +267,11 @@ public class ControllerFactory {
             }
 
 
-
-
         }
 
 
         //auto positioning system
-
+        // updates internal state to keep track of the available space for new controllers
         int orientation = parent.getOrientation();
         float[] position = controller.getPosition();
         int[] usedSpace = parent.getUsedSpace();
@@ -274,30 +283,52 @@ public class ControllerFactory {
         } else if (orientation == 1) {  // Vertical
             controller.setPosition(position[0], usedSpace[1]);
             int height;
-            if(controller instanceof Group){
+            if (controller instanceof Group) {
                 height = ((Group) controller).getBackgroundHeight();
-            }else{
+            } else {
                 height = controller.getHeight();
             }
             parent.addUsedSpace(0, height);
         }
 
-
-
-        if(attributes.containsKey("padding")){
-
-            if (controller instanceof Group){
-                float[] p = controller.getPosition();
-
-                int padding = 20;
-                controller.setPosition(p[0] + padding,p[1] + padding);
-                ((Group) controller).setWidth(controller.getWidth() - padding*2);
-                ((Group) controller).setBackgroundHeight(((Group) controller).getBackgroundHeight() - padding*2);
-            }
-        }
         controller.updateAbsolutePosition();
         controller.moveTo(parent);
 
+        if (attributes.containsKey("padding")) {
+
+            //i padding has to run after the layout positioning system
+            LayoutBuilder.Attribute attribute = attributes.get("padding");
+
+            float[] p = controller.getPosition();
+
+            int[] padding = new int[4];
+            if (attribute.getValue() instanceof Integer) {
+                //set all indexes to the same value
+                int value = (int) attribute.getValue();
+                for (int i = 0; i < padding.length; i++) {
+                    padding[i] = value;
+                }
+            }//else if its an array of int
+            else if (attribute.getValue() instanceof int[]) {
+                int[] array = (int[]) attribute.getValue();
+                for (int i = 0; i < padding.length; i++) {
+                    padding[i] = array[i];
+                }
+            }
+            //0 - top
+            //1 - right
+            //2 - bottom
+            //3 - left
+
+            controller.setPosition(p[0] + padding[3], p[1] + padding[0]);
+            if (controller instanceof Group) {
+                ((Group) controller).setWidth(controller.getWidth() - (padding[1] + padding[3]));
+                ((Group) controller).setBackgroundHeight(((Group) controller).getBackgroundHeight() - (padding[0] + padding[2]));
+            } else if (controller instanceof Controller) {
+                ((Controller) controller).setWidth(controller.getWidth() - (padding[1] + padding[3]));
+                ((Controller) controller).setHeight(controller.getHeight() - (padding[0] + padding[2]));
+            }
+        }
 
     }
 

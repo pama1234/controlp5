@@ -167,6 +167,8 @@ public interface ControlP5Constants {
 	public final static CColor THEME_RED = new CColor( 0xffaa0000 , 0xff660000 , 0xffff0000 , 0xffffffff , 0xffffffff );
 	public final static CColor THEME_GREY = new CColor( 0xffeeeeee, 0xffbbbbbb , 0xffffffff , 0xff555555 , 0xff555555 );
 	public final static CColor THEME_A = new CColor( 0xff00FFC8 , 0xff00D7FF , 0xffffff00 , 0xff00B0FF , 0xff00B0FF );
+	public final static CColor THEME_KINESTHESIA = new CColor( 0xff0074D9 , 0xff2A455F, 0xff00aaff , 0xffffffff , 0xffffffff );
+
 
 	// other colors: #ff3838 red-salmon; #08ffb4 turquoise; #40afff light-blue; #f3eddb beige; 
 	

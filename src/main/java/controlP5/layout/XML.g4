@@ -25,7 +25,7 @@ value: STRING
      | rgb
      | vector;
 
-vector: '(' NUMBER ',' NUMBER ')';
+vector: '(' NUMBER (',' NUMBER)* ')';
 
 rgb: 'rgb' '(' NUMBER ',' NUMBER ',' NUMBER ')';
 

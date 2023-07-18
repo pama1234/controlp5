@@ -89,6 +89,8 @@ public abstract class Controller< T > implements ControllerInterface< T > , CDra
 	protected ControlP5 cp5;
 	private int width;
 	private int height;
+	protected int _myBorderWidth = 5;
+	protected boolean drawBorder = false;
 	protected int _myId = -1;
 	protected float _myValue = Float.NaN;
 	protected float _myDefaultValue = Float.NaN;
