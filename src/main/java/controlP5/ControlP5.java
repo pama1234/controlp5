@@ -713,6 +713,10 @@ public class ControlP5 extends ControlP5Base {
 		_myControllerMap.clear( );
 	}
 
+
+	public Map< String , ControllerInterface< ? >> getControllerMap( ) {
+		return _myControllerMap;
+	}
 	/**
 	 * @exclude
 	 */

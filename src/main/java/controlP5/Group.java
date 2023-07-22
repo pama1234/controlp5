@@ -62,10 +62,26 @@ public class Group extends ControlGroup< Group > {
         return this;
 	};
 
+	public void addChildHorizontally(ControllerInterface<?> controller) {
+
+		int controllerWidth = controller.getWidth();
+		if (_usedSpace[0] + controllerWidth > this.getWidth()) {
+
+			_usedSpace[0] = 0;
+			_usedSpace[1] += controller instanceof Group ? ((Group) controller).getBackgroundHeight() : controller.getHeight();
+		}
+
+		controller.setPosition(_usedSpace[0], _usedSpace[1]);
+		controller.moveTo(this);
+		_usedSpace[0] += controllerWidth;
+	}
 
 
 	public int[] getUsedSpace() {
 		return _usedSpace;
 	}
 
+	public void didSetupLayout() {
+
+	}
 }

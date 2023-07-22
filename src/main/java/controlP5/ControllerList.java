@@ -94,4 +94,7 @@ public class ControllerList {
 		drawables.clear( );
 	}
 
+	public List<ControllerInterface<?>> getControllers() {
+		return controllers;
+	}
 }

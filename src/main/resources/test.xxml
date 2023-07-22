@@ -1,5 +1,5 @@
 <Window>
-    <Group y=0px x=0px hideBar x=0px y=0px height=100% width=100% background=rgb(30,30,30) orientation="vertical">
+    <Group name="main" y=0px x=0px hideBar x=0px y=0px height=100% width=100% background=rgb(30,30,30) orientation="vertical">
         <Group hideBar height=10% width=100% background=rgb(30,30,30) orientation="horizontal" padding=(10,0,10,0)>
             <Button icon="play" height=100%></Button>
              <Textfield text="120" fontSize=28px width=70px background=rgb(30,30,30) height=100%></Textfield>
@@ -7,10 +7,10 @@
         </Group>
 
         <Group hideBar height=60% width=100% background=rgb(30,30,30) orientation="horizontal">
-            <Group name="main" hideBar height=100% width=75% background=rgb(30,30,30)  orientation="horizontal" padding=(0,0,0,10)>
+            <Group hideBar height=100% width=75% background=rgb(30,30,30)  orientation="horizontal" padding=(0,0,0,10)>
                 <Group name="toolbox" height=100% width=100px background=rgb(52,51,77) padding=(0,10,0,0) orientation="vertical">
                 <Bang width=100% padding=(0,0,1,0)></Bang>
-                <Button width=100% padding=(0,0,1,0)></Button>
+                <Button name="SelectTool" width=100% padding=(0,0,1,0)></Button>
                 </Group>
                 <Group name="canvas" hideBar height=100% width=90% background=rgb(34,46,57) padding=(0,4,0,0) ></Group>
             </Group>

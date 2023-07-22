@@ -60,7 +60,7 @@ public class ControllerFactory {
     }
 
     /* creates  a ControllerInterface based on the controllerTypeName */
-    public ControllerInterface<?> createController(String controllerTypeName, Group parent) {
+    public ControllerInterface<?> createController(String controllerTypeName, String name) {
         /* Class of the desired controller */
         Class<? extends ControllerInterface<?>> controllerClass = controlMap.get(controllerTypeName);
 
@@ -71,8 +71,11 @@ public class ControllerFactory {
         try {
             //instantiate the controller
             Constructor<? extends ControllerInterface<?>> constructor = controllerClass.getConstructor(ControlP5.class, String.class);
-            String uui = UUID.randomUUID().toString();
-            ControllerInterface<?> controller = constructor.newInstance(cp5, uui);
+            if(name == null){
+                name = UUID.randomUUID().toString();
+            }
+            ControllerInterface<?> controller = constructor.newInstance(cp5, name);
+
             return controller;
 
         } catch (Exception e) {
@@ -330,7 +333,15 @@ public class ControllerFactory {
             }
         }
 
+        if (controller instanceof Group) {
+            ((Group) controller).didSetupLayout();
+        }
     }
 
 
+
+
+    public void addCustomClasses(String key, Class<? extends ControllerInterface<?>> theClass) {
+        controlMap.put(key, theClass);
+    }
 }

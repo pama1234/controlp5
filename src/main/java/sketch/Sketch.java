@@ -24,15 +24,7 @@ public class Sketch extends PApplet {
     }
     public void setup() {
         cp5 = new ControlP5(this);
-        smooth();
         LayoutBuilder builder = new LayoutBuilder(this, cp5);
-        PFont   myFont = createFont("fonts/CascadiaCode_VTT.ttf", 12, true);
-
-
-
-        ControlFont cfont = new ControlFont(myFont);
-
-        cp5.setFont(cfont);
 
         try {
             Path xmlPath = Paths.get("src/main/resources/test.xxml");
@@ -44,13 +36,8 @@ public class Sketch extends PApplet {
 
 
 
-
-
     }
 
-    public void radioButton(int index) {
-
-    }
 
     public void draw() {
 

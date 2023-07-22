@@ -390,6 +390,12 @@ public abstract class ControllerGroup< T > implements ControllerInterface< T > ,
 		if ( isVisible ) {
 			theGraphics.pushMatrix( );
 			theGraphics.translate( x( position ) , y( position ) );
+			//draw a border
+			if ( isBarVisible ) {
+				theGraphics.noStroke( );
+				theGraphics.fill( color.getBackground( ) );
+				theGraphics.rect( 0 , 0 , getWidth() , getHeight() );
+			}
 			preDraw( theGraphics );
 			drawControllers( cp5.papplet , theGraphics );
 			postDraw( theGraphics );
@@ -829,6 +835,9 @@ public abstract class ControllerGroup< T > implements ControllerInterface< T > ,
 		return cp5.getController( theController );
 	}
 
+	public ControllerList getControllers( ) {
+		return controllers;
+	}
 	public T setCaptionLabel( String theValue ) {
 		getCaptionLabel( ).set( theValue );
 		return me;

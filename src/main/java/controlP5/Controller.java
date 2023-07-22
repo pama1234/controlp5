@@ -103,6 +103,7 @@ public abstract class Controller< T > implements ControllerInterface< T > , CDra
 	protected boolean isBroadcast = true;
 	protected boolean isVisible = true;
 	protected boolean isActive = false;
+	protected boolean shouldSkipNextEvent = false;
 	protected boolean isLock = false;
 	protected boolean isUserInteraction = true;
 	protected boolean isInit = false;
@@ -704,9 +705,13 @@ public abstract class Controller< T > implements ControllerInterface< T > , CDra
 	 * @see ControllerInterface.updateInternalEvents
 	 */
 	@ControlP5.Invisible public T updateInternalEvents( final PApplet theApplet ) {
+
 		return me;
 	}
 
+	public void skipNextEvent(){
+		shouldSkipNextEvent = true;
+	}
 	/**
 	 * the default draw function for each controller extending superclass Controller. This draw function will take care
 	 * of default matrix operations and will call the display function of the current ControllerView object active for
@@ -1751,6 +1756,11 @@ public abstract class Controller< T > implements ControllerInterface< T > , CDra
 		setImage( imgs[ 2 ] , ACTIVE );
 		setImage( imgs.length == 3 ? imgs[ 2 ] : imgs[ 3 ] , HIGHLIGHT );
 		return me;
+	}
+
+	public T setImage(String imagePath){
+		PImage image = cp5.papplet.loadImage(imagePath);
+		return setImage( image , DEFAULT );
 	}
 
 	public T setImage( PImage theImage ) {

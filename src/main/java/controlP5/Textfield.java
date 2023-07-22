@@ -412,6 +412,10 @@ public class Textfield extends Controller<Textfield> implements ReleasedOutsideL
     }
 
     public void keyEvent(KeyEvent theKeyEvent) {
+        if(shouldSkipNextEvent){
+            shouldSkipNextEvent = false;
+            return;
+        }
         if (isUserInteraction && isTexfieldActive && isActive && theKeyEvent.getAction() == KeyEvent.PRESS) {
             if (ignorelist.contains(cp5.getKeyCode())) {
                 return;

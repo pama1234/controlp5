@@ -30,6 +30,9 @@ package controlP5;
 import processing.core.PGraphics;
 import processing.core.PImage;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 /**
  * <p>
  * A button triggers an event after it has been release.
@@ -40,7 +43,7 @@ import processing.core.PImage;
  * @example controllers/ControlP5button
  */
 
-public class Button extends Controller< Button > {
+public class Button extends Controller< Button >  {
 
 	protected boolean isPressed;
 	protected boolean isOn = false;
@@ -176,6 +179,16 @@ public class Button extends Controller< Button > {
 	 *
 	 * @return Button
 	 */
+
+	/**
+	 * sets the state of isOn only, no event propagations
+	 * @param state
+	 * @return
+	 */
+	public Button updateOn(boolean state){
+		isOn = state;
+		return this;
+	}
 	public Button setOn( ) {
 		if ( isSwitch ) {
 			isOn = false;
@@ -258,6 +271,8 @@ public class Button extends Controller< Button > {
 		}
 		return this;
 	}
+
+
 
 	private class ButtonView implements ControllerView< Button > {
 
