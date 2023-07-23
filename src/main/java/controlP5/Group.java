@@ -1,5 +1,8 @@
 package controlP5;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * controlP5 is a processing gui library.
  * 
@@ -83,5 +86,17 @@ public class Group extends ControlGroup< Group > {
 
 	public void didSetupLayout() {
 
+	}
+
+	public void clear(){
+		List<String> namesToRemove = new ArrayList<>();
+		for (int i = 0; i < controllers.size(); i++) {
+			ControllerInterface<?> controller = controllers.get(i);
+			namesToRemove.add(controller.getName());
+		}
+		for ( String name : namesToRemove) {
+			cp5.remove(name);
+		}
+		setUsedSpace(new int[2]);
 	}
 }

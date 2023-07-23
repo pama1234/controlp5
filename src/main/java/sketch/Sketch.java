@@ -4,7 +4,6 @@ package sketch;
 import controlP5.*;
 import controlP5.layout.LayoutBuilder;
 import processing.core.PApplet;
-import processing.core.PFont;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
