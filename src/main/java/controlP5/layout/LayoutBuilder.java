@@ -26,8 +26,9 @@ public class LayoutBuilder {
         _cp5 = cp5;
         _pApplet = pApplet;
         _factory = new ControllerFactory(pApplet, _cp5);
-
-
+    }
+    public void addCustomClasses(String name,Class<? extends ControllerInterface<?>> theClass){
+        _factory.addCustomClasses(name,theClass);
     }
 
     public void parseXML(String xml) throws Exception {
@@ -41,8 +42,6 @@ public class LayoutBuilder {
         ParseTreeWalker walker = new ParseTreeWalker();
         XMLVisitor visitor = new XMLVisitor(_pApplet, _cp5);
         visitor.visit(tree);
-
-
     }
 
     private class XMLVisitor extends XMLBaseVisitor {
@@ -66,6 +65,7 @@ public class LayoutBuilder {
             Group root = _cp5.addGroup("root");
             root.setWidth(parentWidth);
             root.setBackgroundHeight(parentHeight);
+            root.hideBar();
 
 
             //visit children
@@ -116,7 +116,12 @@ public class LayoutBuilder {
                 }
             }
 
-            ControllerInterface<?> controller = _factory.createController(tag.getName(), parent);
+            Attribute<?> nameAttribute = tag.getAttributes().get("name");
+            String name = null;
+            if(nameAttribute != null){
+                name = (String) nameAttribute.getValue();
+            }
+            ControllerInterface<?> controller = _factory.createController(tag.getName(), name);
 
             _factory.configure(controller, tag.getAttributes(), parent);
 
@@ -215,9 +220,9 @@ public class LayoutBuilder {
 
     private class Tag {
         private String name;
-        private HashMap<String, Attribute<?>> attributes;
+        private LinkedHashMap<String, Attribute<?>> attributes;
 
-        public Tag(String name, HashMap<String, Attribute<?>> attributes) {
+        public Tag(String name, LinkedHashMap<String, Attribute<?>> attributes) {
             this.name = name;
             this.attributes = attributes;
         }
@@ -226,7 +231,7 @@ public class LayoutBuilder {
             return name;
         }
 
-        public HashMap<String, Attribute<?>> getAttributes() {
+        public LinkedHashMap<String, Attribute<?>> getAttributes() {
             return attributes;
         }
     }

@@ -28,6 +28,10 @@ package controlP5;
  */
 
 import processing.core.PGraphics;
+import processing.core.PImage;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * <p>
@@ -39,7 +43,7 @@ import processing.core.PGraphics;
  * @example controllers/ControlP5button
  */
 
-public class Button extends Controller< Button > {
+public class Button extends Controller< Button >  {
 
 	protected boolean isPressed;
 	protected boolean isOn = false;
@@ -175,6 +179,16 @@ public class Button extends Controller< Button > {
 	 *
 	 * @return Button
 	 */
+
+	/**
+	 * sets the state of isOn only, no event propagations
+	 * @param state
+	 * @return
+	 */
+	public Button updateOn(boolean state){
+		isOn = state;
+		return this;
+	}
 	public Button setOn( ) {
 		if ( isSwitch ) {
 			isOn = false;
@@ -258,6 +272,8 @@ public class Button extends Controller< Button > {
 		return this;
 	}
 
+
+
 	private class ButtonView implements ControllerView< Button > {
 
 		public void display( PGraphics theGraphics , Button theController ) {
@@ -277,27 +293,37 @@ public class Button extends Controller< Button > {
 			}
 			theGraphics.rect( 0 , 0 , getWidth( ) , getHeight( ) );
 			if ( isLabelVisible ) {
+
+				theGraphics.clip(0,0,getWidth(),getHeight());
 				_myCaptionLabel.draw( theGraphics , 0 , 0 , theController );
+				theGraphics.noClip();
 			}
 		}
 	}
 
 	private class ButtonImageView implements ControllerView< Button > {
 
-		public void display( PGraphics theGraphics , Button theController ) {
-			if ( isOn && isSwitch ) {
-				theGraphics.image( ( availableImages[ HIGHLIGHT ] == true ) ? images[ HIGHLIGHT ] : images[ DEFAULT ] , 0 , 0 );
-				return;
-			}
-			if ( getIsInside( ) ) {
-				if ( isPressed ) {
-					theGraphics.image( ( availableImages[ ACTIVE ] == true ) ? images[ ACTIVE ] : images[ DEFAULT ] , 0 , 0 );
+		public void display(PGraphics theGraphics, Button theController) {
+			PImage imageToDraw;
+			if (isOn && isSwitch) {
+				imageToDraw = (availableImages[HIGHLIGHT] == true) ? images[HIGHLIGHT] : images[DEFAULT];
+			} else if (getIsInside()) {
+				if (isPressed) {
+					imageToDraw = (availableImages[ACTIVE] == true) ? images[ACTIVE] : images[DEFAULT];
 				} else {
-					theGraphics.image( ( availableImages[ OVER ] == true ) ? images[ OVER ] : images[ DEFAULT ] , 0 , 0 );
+					imageToDraw = (availableImages[OVER] == true) ? images[OVER] : images[DEFAULT];
 				}
 			} else {
-				theGraphics.image( images[ DEFAULT ] , 0 , 0 );
+				imageToDraw = images[DEFAULT];
 			}
+
+			// Calculate the position to center the image
+			float xPos = (theController.getWidth() - imageToDraw.width) / 2.0f;
+			float yPos = (theController.getHeight() - imageToDraw.height) / 2.0f;
+
+			// Draw the image at the calculated position
+			theGraphics.image(imageToDraw, xPos, yPos);
+
 		}
 	}
 

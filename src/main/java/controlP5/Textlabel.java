@@ -91,6 +91,9 @@ public class Textlabel extends Controller< Textlabel > {
 		_myValueLabel.toUpperCase( false );
 	}
 
+	public Textlabel(ControlP5 theControlP5,String id){
+		super(theControlP5,id);
+	}
 	public Textlabel( ControlP5 theControlP5 , final String theValue , final int theX , final int theY , final int theW , final int theH ) {
 		super( "" , theX , theY );
 		cp5 = theControlP5;
@@ -109,12 +112,13 @@ public class Textlabel extends Controller< Textlabel > {
 	}
 
 	@Override public Textlabel setWidth( int theValue ) {
-		_myValueLabel.setWidth( theValue );
+		super.setWidth(theValue);
 		return this;
 	}
 
 	public Textlabel setHeight( int theValue ) {
-		_myValueLabel.setHeight( theValue );
+//		_myValueLabel.setHeight( theValue );
+		super.setHeight( theValue );
 		return this;
 	}
 
@@ -123,11 +127,22 @@ public class Textlabel extends Controller< Textlabel > {
 	}
 
 	@Override public void draw( final PGraphics theGraphics ) {
-		if ( !disabled ) {
-			theGraphics.pushMatrix( );
-			theGraphics.translate( x( position ) , y( position ) );
-			_myValueLabel.draw( theGraphics , 0 , 0 , this );
-			theGraphics.popMatrix( );
+		if (!disabled) {
+			theGraphics.pushMatrix();
+			theGraphics.translate(x(position), y(position));
+
+
+
+			// Get the center of the rectangle
+			float centerY = getHeight() / 2.0f;
+
+			// Assume a way to get the label's height. Replace getLabelHeight() with actual method or variable
+			float labelHeight = _myValueLabel.getHeight();
+
+			// Draw the label vertically centered
+			_myValueLabel.draw(theGraphics, 0, Math.round(centerY - labelHeight / 2.0f), this);
+
+			theGraphics.popMatrix();
 		}
 	}
 
@@ -191,8 +206,8 @@ public class Textlabel extends Controller< Textlabel > {
 	public Textlabel setValue( final String theText ) {
 		_myStringValue = theText;
 		_myValueLabel.set( theText );
-		setWidth( _myValueLabel.getWidth( ) );
-		setHeight( _myValueLabel.getHeight( ) );
+//		setWidth( _myValueLabel.getWidth( ) );
+//		setHeight( _myValueLabel.getHeight( ) );
 		return this;
 	}
 

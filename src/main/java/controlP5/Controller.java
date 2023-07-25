@@ -89,6 +89,8 @@ public abstract class Controller< T > implements ControllerInterface< T > , CDra
 	protected ControlP5 cp5;
 	private int width;
 	private int height;
+	protected int _myBorderWidth = 5;
+	protected boolean drawBorder = false;
 	protected int _myId = -1;
 	protected float _myValue = Float.NaN;
 	protected float _myDefaultValue = Float.NaN;
@@ -101,6 +103,7 @@ public abstract class Controller< T > implements ControllerInterface< T > , CDra
 	protected boolean isBroadcast = true;
 	protected boolean isVisible = true;
 	protected boolean isActive = false;
+	protected boolean shouldSkipNextEvent = false;
 	protected boolean isLock = false;
 	protected boolean isUserInteraction = true;
 	protected boolean isInit = false;
@@ -182,8 +185,8 @@ public abstract class Controller< T > implements ControllerInterface< T > , CDra
 		_myControlListener = new ArrayList< ControlListener >( );
 		subelements = new ArrayList< Controller< ? >>( );
 		_myArrayValue = new float[ 0 ];
-		_myDebugView = new DebugView( );
-		setView( _myDebugView );
+		//_myDebugView = new DebugView( );
+		//setView( _myDebugView );
 	}
 
 	List< Controller< ? >> getSubelements( ) {
@@ -702,9 +705,13 @@ public abstract class Controller< T > implements ControllerInterface< T > , CDra
 	 * @see ControllerInterface.updateInternalEvents
 	 */
 	@ControlP5.Invisible public T updateInternalEvents( final PApplet theApplet ) {
+
 		return me;
 	}
 
+	public void skipNextEvent(){
+		shouldSkipNextEvent = true;
+	}
 	/**
 	 * the default draw function for each controller extending superclass Controller. This draw function will take care
 	 * of default matrix operations and will call the display function of the current ControllerView object active for
@@ -1749,6 +1756,11 @@ public abstract class Controller< T > implements ControllerInterface< T > , CDra
 		setImage( imgs[ 2 ] , ACTIVE );
 		setImage( imgs.length == 3 ? imgs[ 2 ] : imgs[ 3 ] , HIGHLIGHT );
 		return me;
+	}
+
+	public T setImage(String imagePath){
+		PImage image = cp5.papplet.loadImage(imagePath);
+		return setImage( image , DEFAULT );
 	}
 
 	public T setImage( PImage theImage ) {

@@ -4,8 +4,6 @@ package sketch;
 import controlP5.*;
 import controlP5.layout.LayoutBuilder;
 import processing.core.PApplet;
-
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,12 +21,9 @@ public class Sketch extends PApplet {
     public void settings() {
         size(1280, 820);
     }
-
     public void setup() {
         cp5 = new ControlP5(this);
-
         LayoutBuilder builder = new LayoutBuilder(this, cp5);
-
 
         try {
             Path xmlPath = Paths.get("src/main/resources/test.xxml");
@@ -40,13 +35,8 @@ public class Sketch extends PApplet {
 
 
 
-
-
     }
 
-    public void radioButton(int index) {
-
-    }
 
     public void draw() {
 

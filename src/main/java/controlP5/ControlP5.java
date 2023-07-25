@@ -76,7 +76,7 @@ public class ControlP5 extends ControlP5Base {
 	/**
 	 * @exclude
 	 */
-	@ControlP5.Invisible static CColor color = new CColor( THEME_CP52014 );
+	@ControlP5.Invisible static CColor color = new CColor( THEME_KINESTHESIA );
 
 	/**
 	 * @exclude
@@ -713,6 +713,10 @@ public class ControlP5 extends ControlP5Base {
 		_myControllerMap.clear( );
 	}
 
+
+	public Map< String , ControllerInterface< ? >> getControllerMap( ) {
+		return _myControllerMap;
+	}
 	/**
 	 * @exclude
 	 */

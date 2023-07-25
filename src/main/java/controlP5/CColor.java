@@ -33,11 +33,11 @@ import java.io.Serializable;
 @SuppressWarnings( "serial" )
 public class CColor implements Serializable {
 
-	private int colorBackground = 0xff003652;
-	private int colorForeground = 0xff00698c;
-	private int colorActive = 0xff08a2cf; // 0699C4;
-	private int colorCaptionLabel = 0xffffffff;
-	private int colorValueLabel = 0xffffffff;
+	private int colorBackground ;
+	private int colorForeground ;
+	private int colorActive ;
+	private int colorCaptionLabel ;
+	private int colorValueLabel ;
 	private int colorBackgroundAlpha = 0xff;
 	private int colorForegroundAlpha = 0xff;
 	private int colorActiveAlpha = 0xff; // 0699C4;
