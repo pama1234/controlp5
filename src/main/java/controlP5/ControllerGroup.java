@@ -391,11 +391,11 @@ public abstract class ControllerGroup< T > implements ControllerInterface< T > ,
 			theGraphics.pushMatrix( );
 			theGraphics.translate( x( position ) , y( position ) );
 			//draw a border
-			if ( isBarVisible ) {
-				theGraphics.noStroke( );
-				theGraphics.fill( color.getBackground( ) );
-				theGraphics.rect( 0 , 0 , getWidth() , getHeight() );
-			}
+//			if ( isBarVisible ) {
+//				theGraphics.noStroke( );
+//				theGraphics.fill( color.getBackground( ) );
+//				theGraphics.rect( 0 , 0 , getWidth() , getHeight() );
+//			}
 			preDraw( theGraphics );
 			drawControllers( cp5.papplet , theGraphics );
 			postDraw( theGraphics );
