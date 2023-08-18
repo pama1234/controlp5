@@ -18,3 +18,5 @@
 # Ignore everything in the target directory
 /target/
 
+
+.cosine

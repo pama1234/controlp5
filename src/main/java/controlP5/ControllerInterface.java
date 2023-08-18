@@ -40,8 +40,12 @@ public interface ControllerInterface< T > {
 	@ControlP5.Invisible public void init( );
 
 	public int getWidth( );
+	public T setWidth( int theValue );
+
 
 	public int getHeight( );
+	public T setHeight( int theValue );
+	public Label getCaptionLabel();
 
 	public T setValue( float theValue );
 

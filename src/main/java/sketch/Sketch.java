@@ -19,6 +19,7 @@ public class Sketch extends PApplet {
     ControlP5 cp5;
 
     public void settings() {
+        pixelDensity(displayDensity());
         size(1280, 820);
     }
     public void setup() {
@@ -32,8 +33,6 @@ public class Sketch extends PApplet {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-
 
     }
 

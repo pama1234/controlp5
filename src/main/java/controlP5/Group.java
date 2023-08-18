@@ -79,6 +79,17 @@ public class Group extends ControlGroup< Group > {
 		_usedSpace[0] += controllerWidth;
 	}
 
+	public void addChildVertically(ControllerInterface<?> controller) {
+
+		/*add controller to group and increments a counter so we know where to add the next controller*/
+		int controllerHeight = controller.getHeight();
+		controller.setPosition(_usedSpace[0],_usedSpace[1]);
+		controller.moveTo(this);
+		_usedSpace[1] += controllerHeight;
+
+
+
+	}
 
 	public int[] getUsedSpace() {
 		return _usedSpace;
