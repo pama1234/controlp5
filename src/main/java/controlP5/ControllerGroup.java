@@ -469,20 +469,28 @@ public abstract class ControllerGroup< T > implements ControllerInterface< T > ,
 		return bringToFront( this );
 	}
 
-	@Override public T bringToFront( ControllerInterface< ? > theController ) {
-		if ( _myParent instanceof Tab ) {
-			moveTo( ( Tab ) _myParent );
-		} else {
-			_myParent.bringToFront( theController );
-		}
-		if ( theController != this ) {
-			if ( controllers.get( ).contains( theController ) ) {
-				controllers.remove( theController );
-				controllers.add( theController );
+	@Override public T bringToFront(ControllerInterface<?> theController) {
+
+		// If the controller has a parent, recursively bring the parent to the front first.
+		if (_myParent != null) {
+			if (_myParent instanceof Tab) {
+				moveTo((Tab) _myParent);
+			} else {
+				_myParent.bringToFront(this); // Bring the parent to the front first.
 			}
 		}
+
+		// Then, bring the controller itself to the front within its parent's list of controllers.
+		if (theController != this) {
+			if (controllers.get().contains(theController)) {
+				controllers.remove(theController);
+				controllers.add(theController);
+			}
+		}
+
 		return me;
 	}
+
 
 	/**
 	 * Removes a controller from the group, but use Controller.setGroup() instead.
