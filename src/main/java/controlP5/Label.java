@@ -296,6 +296,10 @@ public class Label implements CDrawable {
 	}
 
 	public Label setFont( ControlFont theFont ) {
+		if( theFont == null ) {
+			System.out.println( "ControlP5: setFont() received a null font.");
+			return this;
+		}
 		setLineHeight( theFont.getSize( ) );
 		_myFontLabel = new ControlFont( theFont.getFont( ) , theFont.getSize( ) );
 		_myFontLabel.init( this );
