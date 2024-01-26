@@ -52,11 +52,10 @@ public class ControllerFactory {
         controlMap.put("ScrollableList", ScrollableList.class);
         controlMap.put("Slider", Slider.class);
         controlMap.put("Slider2D", Slider2D.class);
-        controlMap.put("Spacer", Spacer.class);
         controlMap.put("Textfield", Textfield.class);
         controlMap.put("Textlabel", Textlabel.class);
         controlMap.put("Toggle", Toggle.class);
-
+        controlMap.put("Spacer",Spacer.class);
     }
 
     /* creates  a ControllerInterface based on the controllerTypeName */

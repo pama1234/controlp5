@@ -65,8 +65,8 @@ public final class ControlWindow {
 	protected boolean rendererNotification = false;
 	protected float[] positionOfTabs = new float[]{ 0 , 0 , 0 };
 	private int _myFrameCount = 0;
-	private boolean isMouse = true;
-	private Pointer _myPointer;
+	public boolean isMouse = true;
+	private ControlWindowPointer _myPointer;
 	private int mouseWheelMoved = 0;
 	private List< ControllerInterface< ? >> mouseoverlist;
 	private boolean isMouseOver;
@@ -98,7 +98,7 @@ public final class ControlWindow {
 
 	protected void init( ) {
 
-		_myPointer = new Pointer( );
+		_myPointer = new ControlWindowPointer(this);
 		_myCanvas = new ArrayList< Canvas >( );
 		_myTabs = new ControllerList( );
 		_myTabs.add( new Tab( cp5 , this , "global" ) );
@@ -639,7 +639,7 @@ public final class ControlWindow {
 		return _myName;
 	}
 
-	private void mousePressedEvent( ) {
+	public void mousePressedEvent( ) {
 		if ( isVisible ) {
 			mousePressed = true;
 			pmousePressedTime = mousePressedTime;
@@ -653,7 +653,7 @@ public final class ControlWindow {
 		}
 	}
 
-	private void mouseReleasedEvent( ) {
+	public void mouseReleasedEvent( ) {
 		if ( isVisible ) {
 			mousePressed = false;
 			mouselock = false;
@@ -865,7 +865,7 @@ public final class ControlWindow {
 		return this;
 	}
 
-	public Pointer getPointer( ) {
+	public ControlWindowPointer getPointer( ) {
 		return _myPointer;
 	}
 
@@ -877,95 +877,6 @@ public final class ControlWindow {
 	public ControlWindow enablePointer( ) {
 		_myPointer.enable( );
 		return this;
-	}
-
-	/**
-	 * A pointer by default is linked to the mouse and
-	 * stores the x and y position as well as the pressed
-	 * and released state. The pointer can be accessed by
-	 * its getter method {@link ControlWindow#getPointer()}.
-	 * Then use
-	 * {@link ControlWindow#set(int, int)} to
-	 * alter its position or invoke {
-	 * {@link ControlWindow#pressed()} or
-	 * {@link ControlWindow#released()} to change
-	 * its state. To disable the mouse and enable the
-	 * Pointer use {@link ControlWindow#enable()}
-	 * and {@link ControlWindow#disable()} to
-	 * default back to the mouse as input parameter.
-	 */
-	// TODO offset against pgx and pgy
-	public class Pointer {
-
-		public Pointer setX( int theX ) {
-			mouseX = theX;
-			return this;
-		}
-
-		public Pointer setY( int theY ) {
-			mouseY = theY;
-			return this;
-		}
-
-		public int getY( ) {
-			return mouseY;
-		}
-
-		public int getX( ) {
-			return mouseX;
-		}
-
-		public int getPreviousX( ) {
-			return pmouseX;
-		}
-
-		public int getPreviousY( ) {
-			return pmouseY;
-		}
-
-		public Pointer set( int theX , int theY ) {
-			setX( theX );
-			setY( theY );
-			return this;
-		}
-
-		// TODO mousePressed/mouseReleased are handled wrongly, released is called when moved, for now do not use, instead use set(x,y), pressed(), released()
-		public Pointer set( int theX , int theY , boolean pressed ) {
-			setX( theX );
-			setY( theY );
-			if ( pressed ) {
-				if ( !mousePressed ) {
-					pressed( );
-				}
-			} else {
-				if ( mousePressed ) {
-					released( );
-				}
-			}
-			return this;
-		}
-
-		public Pointer pressed( ) {
-			mousePressedEvent( );
-			return this;
-		}
-
-		public Pointer released( ) {
-			mouseReleasedEvent( );
-			return this;
-		}
-
-		public void enable( ) {
-			isMouse = false;
-		}
-
-		public void disable( ) {
-			isMouse = true;
-		}
-
-		public boolean isEnabled( ) {
-			return !isMouse;
-		}
 	}
 
 	/**

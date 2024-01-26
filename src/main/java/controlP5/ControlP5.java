@@ -50,7 +50,6 @@ import processing.core.PFont;
 import processing.core.PGraphics;
 import processing.event.KeyEvent;
 import processing.event.MouseEvent;
-import controlP5.ControlWindow.Pointer;
 
 /**
  * <p>
@@ -759,7 +758,7 @@ public class ControlP5 extends ControlP5Base {
 	 * convenience method to access the pointer of the main
 	 * control window.
 	 */
-	public Pointer getPointer( ) {
+	public ControlWindowPointer getPointer( ) {
 		return getWindow( papplet ).getPointer( );
 	}
 
