@@ -262,8 +262,14 @@ public class Toggle extends Controller< Toggle > {
 
 			if ( isOn ) {
 				theGraphics.rect( 0 , 0 , getWidth( ) / 2 , getHeight( ) );
+				theGraphics.textSize( 10 );
+				theGraphics.fill( color.getCaptionLabel( ) );
+				theGraphics.text( "ON" , getWidth()/2 + 5,getHeight() - 5 );
 			} else {
 				theGraphics.rect( ( getWidth( ) % 2 == 0 ? 0 : 1 ) + getWidth( ) / 2 , 0 , getWidth( ) / 2 , getHeight( ) );
+				theGraphics.textSize( 10 );
+				theGraphics.fill( color.getCaptionLabel( ) );
+				theGraphics.text( "OFF" , 5 , getHeight() -5 );
 			}
 
 			if ( isLabelVisible ) {
