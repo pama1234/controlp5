@@ -8,6 +8,7 @@
 /Users/gabrielsalvador/Code/controlP5/src/main/java/controlP5/Println.java
 /Users/gabrielsalvador/Code/controlP5/src/main/java/controlP5/Slider2D.java
 /Users/gabrielsalvador/Code/controlP5/src/main/java/controlP5/ControlTimer.java
+/Users/gabrielsalvador/Code/controlP5/src/main/java/controlP5/ControlWindowPointer.java
 /Users/gabrielsalvador/Code/controlP5/src/main/java/controlP5/ControllerLayout.java
 /Users/gabrielsalvador/Code/controlP5/src/main/java/controlP5/layout/lang/XMLLexer.java
 /Users/gabrielsalvador/Code/controlP5/src/main/java/controlP5/ControlFont.java
@@ -81,6 +82,7 @@
 /Users/gabrielsalvador/Code/controlP5/src/main/java/controlP5/Knob.java
 /Users/gabrielsalvador/Code/controlP5/src/main/java/controlP5/Radio.java
 /Users/gabrielsalvador/Code/controlP5/src/main/java/controlP5/Chart.java
+/Users/gabrielsalvador/Code/controlP5/src/main/java/controlP5/Keyboard.java
 /Users/gabrielsalvador/Code/controlP5/src/main/java/controlP5/Group.java
 /Users/gabrielsalvador/Code/controlP5/src/main/java/controlP5/ControlEvent.java
 /Users/gabrielsalvador/Code/controlP5/src/main/java/controlP5/ControlGroup.java
