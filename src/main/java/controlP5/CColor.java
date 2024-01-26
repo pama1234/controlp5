@@ -167,10 +167,14 @@ public class CColor implements Serializable {
 	public int getActive( ) {
 		return colorActive;
 	}
+	public int getWhite( ) {
+		return 0xffffffff;
+	}
 
 	public int getCaptionLabel( ) {
 		return colorCaptionLabel;
 	}
+
 
 	public int getValueLabel( ) {
 		return colorValueLabel;
