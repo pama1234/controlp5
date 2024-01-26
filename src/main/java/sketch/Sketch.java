@@ -34,6 +34,12 @@ public class Sketch extends PApplet {
             throw new RuntimeException(e);
         }
 
+
+
+        Keyboard keyboard2 = new Keyboard(cp5, "keyboard2");
+        keyboard2.setPosition(100, 200);
+        keyboard2.setSize(300, 300);
+
     }
 
 
