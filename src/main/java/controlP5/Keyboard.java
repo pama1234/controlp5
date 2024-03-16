@@ -2,8 +2,25 @@ package controlP5;
 
 import processing.core.PGraphics;
 import processing.core.PVector;
+import java.util.ArrayList;
 
 public class Keyboard extends Controller<Keyboard> {
+
+    public static class Key{
+        public int pitch;
+        public PVector leftTop;
+        public PVector rightBottom;
+
+        public Key(int pitch, PVector leftTop, PVector rightBottom){
+            this.pitch = pitch;
+            this.leftTop = leftTop;
+            this.rightBottom = rightBottom;
+        }
+
+    }
+
+    public ArrayList<Key> keys = new ArrayList<>();
+
 
     public int hoveredNote = -1;
 
@@ -15,10 +32,9 @@ public class Keyboard extends Controller<Keyboard> {
 
     @Override
     public void draw(PGraphics theGraphics) {
-        theGraphics.pushMatrix();
-        theGraphics.translate(x(position), y(position));
+
         _myControllerView.display(theGraphics, this);
-        theGraphics.popMatrix();
+
     }
 
 
@@ -29,10 +45,10 @@ public class Keyboard extends Controller<Keyboard> {
         float mouseY = getPointer().y();
 
         int note = getNoteFromMousePosition(mouseX, mouseY);
-        if (note != hoveredNote) {
-            hoveredNote = note;
-            System.out.println(note);
-        }
+
+        setValue(note);
+
+
 
     }
 
@@ -44,158 +60,111 @@ public class Keyboard extends Controller<Keyboard> {
         int note = getNoteFromMousePosition(mouseX, mouseY);
         if (note != hoveredNote) {
             hoveredNote = note;
-            System.out.println(note);
         }
 
     }
 
 
     public int getNoteFromMousePosition(float mouseX, float mouseY) {
+        for (int i = 0; i < keys.size(); i++) {
+            Key key = keys.get(i);
 
-        for (int i = KeyboardView.keyPositions.length - 1; i >= 0; i--) {
-            PVector[] positions = KeyboardView.keyPositions[i];
-            PVector upperLeft = positions[0];
-            PVector lowerRight = positions[1];
+            // Scale unitary coordinates to actual size
+            float x = key.leftTop.x * getWidth();
+            float y = key.leftTop.y * getHeight();
+            float width = (key.rightBottom.x - key.leftTop.x) * getWidth();
+            float height = (key.rightBottom.y - key.leftTop.y) * getHeight();
 
-            if (mouseX >= upperLeft.x * getWidth() && mouseX <= lowerRight.x * getWidth() && mouseY >= upperLeft.y * getHeight() && mouseY <= lowerRight.y * getHeight()) {
-                if (i == 0) {
-                    return 0;
-                } else if (i == 1) {
-                    return(2);
-                } else if (i == 2) {
-                    return(4);
-                } else if (i == 3) {
-                    return(5);
-                } else if (i == 4) {
-                    return(7);
-                } else if (i == 5) {
-                    return(9);
-                } else if (i == 6) {
-                    return(11);
-                } else if (i == 7) {
-                    return(1);
-                } else if (i == 8) {
-                    return(3);
-                } else if (i == 9) {
-                    return(6);
-                } else if (i == 10) {
-                    return(8);
-                } else if (i == 11) {
-                    return(10);
-                }
-                break;
+            if (mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height) {
+                return key.pitch;
             }
         }
         return -1;
+
     }
 
-    static public int indexMapping(int note) {
-        switch (note) {
-            case 0: return 0;
-            case 2: return 1;
-            case 4: return 2;
-            case 5: return 3;
-            case 7: return 4;
-            case 9: return 5;
-            case 11: return 6;
-            case 1: return 7;
-            case 3: return 8;
-            case 6: return 9;
-            case 8: return 10;
-            case 10: return 11;
+    public Keyboard setRange(int minPitch, int maxPitch) {
+        keys = buildKeys(minPitch, maxPitch);
+        return this;
+    }
 
-            default: return -1;
+    static ArrayList<Keyboard.Key> buildKeys(int minPitch, int maxPitch) {
+        ArrayList<Keyboard.Key> keys = new ArrayList<>();
+        float unitWidth = 1.0f / (maxPitch - minPitch + 1); // Unit width for each key
+
+        for (int i = minPitch; i <= maxPitch; i++) {
+            int noteIndex = i - minPitch;
+            float xPosition = noteIndex * unitWidth;
+
+            float keyHeight = 1f;
+            keys.add(new Keyboard.Key(i, new PVector(xPosition, 0), new PVector(xPosition + unitWidth, keyHeight)));
         }
+        return keys;
     }
+
+
 }
 
 
 class KeyboardView implements ControllerView<Keyboard> {
 
-    static public PVector[][] keyPositions = new PVector[][]{
-            //C key
-            new PVector[]{
-                    new PVector(0, 0), new PVector(1 / 7f, 1)
-            },
-            //D key
-            new PVector[]{
-                    new PVector(1 / 7f, 0), new PVector(2 / 7f, 1)
-            },
-            //E key
-            new PVector[]{
-                    new PVector(2 / 7f, 0), new PVector(3 / 7f, 1)
-            },
-            //F key
-            new PVector[]{
-                    new PVector(3 / 7f, 0), new PVector(4 / 7f, 1)
-            },
-            //G key
-            new PVector[]{
-                    new PVector(4 / 7f, 0), new PVector(5 / 7f, 1)
-            },
-            //A key
-            new PVector[]{
-                    new PVector(5 / 7f, 0), new PVector(6 / 7f, 1)
-            },
-            //B key
-            new PVector[]{
-                    new PVector(6 / 7f, 0), new PVector(1, 1)
-            },
-            //C# key
-            new PVector[]{
-                    new PVector((0.5f) / 7f, 0), new PVector((0.5f) / 7f + 1 / 7f, 0.5f)
-            },
-            //D# key
-            new PVector[]{
-                    new PVector((1.5f) / 7f, 0), new PVector((1.5f) / 7f + 1 / 7f, 0.5f)
-            },
-            //F# key
-            new PVector[]{
-                    new PVector((3.5f) / 7f, 0), new PVector((3.5f) / 7f + 1 / 7f, 0.5f)
-            },
-            //G# key
-            new PVector[]{
-                    new PVector((4.5f) / 7f, 0), new PVector((4.5f) / 7f + 1 / 7f, 0.5f)
-            },
-            //A# key
-            new PVector[]{
-                    new PVector((5.5f) / 7f, 0), new PVector((5.5f) / 7f + 1 / 7f, 0.5f)
-            },
 
-    };
+
+
 
     @Override
     public void display(PGraphics theGraphics, Keyboard theController) {
         theGraphics.pushMatrix();
+        theGraphics.pushStyle();
+
         float[] absolutePosition = theController.getAbsolutePosition();
         theGraphics.translate(absolutePosition[0], absolutePosition[1]);
 
         theGraphics.stroke(0);
         theGraphics.strokeWeight(0.25f);
 
-        for (int i = 0; i < keyPositions.length; i++) {
-            PVector[] positions = keyPositions[i];
-            PVector upperLeft = positions[0];
-            PVector lowerRight = positions[1];
+        theGraphics.rect(0, 0, theController.getWidth(), theController.getHeight());
 
+        for (int i = 0; i < theController.keys.size(); i++) {
+            Keyboard.Key key = theController.keys.get(i);
 
-            if (i == theController.indexMapping(theController.hoveredNote)) {
-                theGraphics.fill(100);
+            // Scale unitary coordinates to actual size
+            float x = key.leftTop.x * theController.getWidth();
+            float y = key.leftTop.y * theController.getHeight();
+            float width = (key.rightBottom.x - key.leftTop.x) * theController.getWidth();
+            float height = (key.rightBottom.y - key.leftTop.y) * theController.getHeight();
+
+            if (key.pitch % 12 == 0 || key.pitch % 12 == 2 || key.pitch % 12 == 4 || key.pitch % 12 == 5 || key.pitch % 12 == 7 || key.pitch % 12 == 9 || key.pitch % 12 == 11) {
+                theGraphics.fill(255); // White key
             } else {
-                if (i >= 7) {
-                    theGraphics.fill(0);
-                    theGraphics.stroke(255);
-                } else {
-                    theGraphics.fill(255);
-                    theGraphics.stroke(0);
-                }
+                theGraphics.fill(0); // Black key
+            }
+            if (key.pitch == theController.hoveredNote) {
+                theGraphics.fill(127); // Highlight hovered note
             }
 
-            theGraphics.rect(upperLeft.x * theController.getWidth(), upperLeft.y * theController.getHeight(), (lowerRight.x - upperLeft.x) * theController.getWidth(), (lowerRight.y - upperLeft.y) * theController.getHeight());
+            theGraphics.rect(x, y, width, height);
+            theGraphics.fill(0);
+
+            String noteName = pitchToNoteName(key.pitch);
+            theGraphics.textSize(7);
+            float textWidth = theGraphics.textWidth(noteName);
+
+            theGraphics.text(noteName, x + width / 2 - textWidth / 2, y + height / 2);
         }
 
+        theGraphics.popStyle();
         theGraphics.popMatrix();
+    }
+
+    private String pitchToNoteName(int pitch) {
+        String[] noteNames = new String[]{"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A","A#", "B"};
+        int octave = pitch / 12;
+        int noteIndex = pitch % 12;
+        return noteNames[noteIndex] + octave;
     }
 
 
 }
+
+
