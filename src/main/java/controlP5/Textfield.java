@@ -153,16 +153,26 @@ public class Textfield extends Controller<Textfield> implements ReleasedOutsideL
     }
 
     @Override
+    public Textfield setSize(int theWidth, int theHeight) {
+        super.setSize(theWidth, theHeight);
+//        buffer = cp5.papplet.createGraphics( getWidth(), getHeight() );
+        return this;
+    }
+
+    @Override
     public Textfield setWidth(int theWidth) {
         _myValueLabel.setWidth(theWidth);
+        buffer = cp5.papplet.createGraphics( theWidth, getHeight() );
         return super.setWidth(theWidth);
     }
 
     @Override
     public Textfield setHeight(int theHeight) {
         _myValueLabel.setHeight(theHeight);
+        buffer = cp5.papplet.createGraphics( getWidth(), theHeight );
         return super.setHeight(theHeight);
     }
+
 
     public Textfield setFocus(boolean theValue) {
         isTexfieldActive = isActive = theValue;
@@ -315,12 +325,7 @@ public class Textfield extends Controller<Textfield> implements ReleasedOutsideL
         return this;
     }
 
-    @Override
-    public Textfield setSize(int theWidth, int theHeight) {
-        super.setSize(theWidth, theHeight);
-        buffer = cp5.papplet.createGraphics(getWidth(), getHeight());
-        return this;
-    }
+
 
     @Override
     public void draw(PGraphics theGraphics) {
