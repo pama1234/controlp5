@@ -474,7 +474,9 @@ public final class ControlWindow {
 			cp5.modifiers = theKeyEvent.getModifiers( );
 		}
 
-		if ( theKeyEvent.getAction( ) == KeyEvent.PRESS && cp5.isShortcuts( ) ) {
+		boolean shouldCheckShortcuts = isControllerActive == null || !isControllerActive.overridesShortcuts();
+
+		if ( shouldCheckShortcuts && theKeyEvent.getAction( ) == KeyEvent.PRESS && cp5.isShortcuts( ) ) {
 			int n = 0;
 			for ( boolean b : keys ) {
 				n += b ? 1 : 0;
@@ -493,6 +495,8 @@ public final class ControlWindow {
 					ck.keyEvent( );
 				}
 			}
+		}else{
+			handleKeyEvent( theKeyEvent );
 		}
 
 		handleKeyEvent( theKeyEvent );
@@ -822,14 +826,14 @@ public final class ControlWindow {
 		return isVisible;
 	}
 
-	protected boolean isControllerActive( Controller< ? > theController ) {
+	public boolean isControllerActive( Controller< ? > theController ) {
 		if ( isControllerActive == null ) {
 			return false;
 		}
 		return isControllerActive.equals( theController );
 	}
 
-	protected ControlWindow setControllerActive( Controller< ? > theController ) {
+	public ControlWindow setControllerActive( Controller< ? > theController ) {
 		isControllerActive = theController;
 		return this;
 	}

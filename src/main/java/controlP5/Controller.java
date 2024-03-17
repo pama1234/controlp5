@@ -787,6 +787,7 @@ public abstract class Controller< T > implements ControllerInterface< T > , CDra
 
 	public void setActiveController() {
 		((Group)_myParent).setActiveController(this);
+		getWindow().setControllerActive(this);
 	}
 
 	/**
@@ -2244,6 +2245,10 @@ public abstract class Controller< T > implements ControllerInterface< T > , CDra
 		getValueLabel( ).setFont( theFont );
 		getCaptionLabel( ).setFont( theFont );
 		return me;
+	}
+
+	public boolean overridesShortcuts() {
+		return false;
 	}
 
 }

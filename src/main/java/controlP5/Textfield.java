@@ -166,6 +166,11 @@ public class Textfield extends Controller<Textfield> implements ReleasedOutsideL
 
     public Textfield setFocus(boolean theValue) {
         isTexfieldActive = isActive = theValue;
+        if (isTexfieldActive) {
+            getWindow().setControllerActive(this);
+        }else {
+            getWindow().setControllerActive(null);
+        }
         return this;
     }
 
@@ -445,6 +450,10 @@ public class Textfield extends Controller<Textfield> implements ReleasedOutsideL
     protected Textfield setIndex(int theIndex) {
         _myTextBufferIndex = theIndex;
         return this;
+    }
+
+    public boolean overridesShortcuts() {
+        return true;
     }
 
 
