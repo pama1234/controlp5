@@ -16,8 +16,8 @@
 *.DS_Store
 
 # Ignore everything in the target directory
-/target/*
-target/*
+
+target/
 
 
 .cosine
