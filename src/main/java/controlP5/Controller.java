@@ -786,7 +786,7 @@ public abstract class Controller< T > implements ControllerInterface< T > , CDra
 	}
 
 	public void setActiveController() {
-		((Group)_myParent).setActiveController(this);
+//		((ControllerGroup<?>)_myParent).setActiveController(this);
 		getWindow().setControllerActive(this);
 	}
 
@@ -1215,7 +1215,8 @@ public abstract class Controller< T > implements ControllerInterface< T > , CDra
 	}
 
 	protected void mousePressed( ) {
-		( (ControllerGroup<?>) _myParent).setActiveController(this);
+//		( (ControllerGroup<?>) _myParent).setActiveController(this);
+		getWindow().setControllerActive(this);
 	}
 
 	protected void mouseReleased( ) {

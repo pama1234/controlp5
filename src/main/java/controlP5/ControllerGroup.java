@@ -45,7 +45,7 @@ public abstract class ControllerGroup< T > implements ControllerInterface< T > ,
 	protected ControllerList controllers;
 
 	/* the controller that receives KeyEvents*/
-	protected  Controller<?> activeController;
+//	protected  Controller<?> activeController;
 	protected List< ControlListener > _myControlListener;
 	// protected ControlWindow _myControlWindow;
 	protected ControlP5 cp5;
@@ -557,22 +557,22 @@ public abstract class ControllerGroup< T > implements ControllerInterface< T > ,
 	}
 
 	@ControlP5.Invisible public void keyEvent( KeyEvent theEvent ) {
-//		for ( int i = 0 ; i < controllers.size( ) ; i++ ) {
-//			( ( ControllerInterface< ? > ) controllers.get( i ) ).keyEvent( theEvent );
-//		}
-		if ( activeController != null ){
-			activeController.keyEvent(theEvent);
+		for ( int i = 0 ; i < controllers.size( ) ; i++ ) {
+			( ( ControllerInterface< ? > ) controllers.get( i ) ).keyEvent( theEvent );
 		}
+//		if ( activeController != null ){
+//			activeController.keyEvent(theEvent);
+//		}
 	}
 
-	public ControllerGroup<T> setActiveController(Controller<?> theController){
-		activeController = theController;
-		return this;
-	}
-
-	public Controller<?> getActiveController(){
-		return activeController;
-	}
+//	public ControllerGroup<T> setActiveController(Controller<?> theController){
+//		activeController = theController;
+//		return this;
+//	}
+//
+//	public Controller<?> getActiveController(){
+//		return activeController;
+//	}
 
 
 

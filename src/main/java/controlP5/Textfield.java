@@ -287,6 +287,7 @@ public class Textfield extends Controller<Textfield> implements ReleasedOutsideL
     public void mouseReleasedOutside() {
         if (isKeepFocus == false) {
             isTexfieldActive = isActive = false;
+//            getWindow().setControllerActive(null);
         }
     }
 

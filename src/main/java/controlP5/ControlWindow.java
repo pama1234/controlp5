@@ -499,7 +499,7 @@ public final class ControlWindow {
 			handleKeyEvent( theKeyEvent );
 		}
 
-		handleKeyEvent( theKeyEvent );
+
 	}
 
 	public void clearKeys( ) {
@@ -831,6 +831,10 @@ public final class ControlWindow {
 			return false;
 		}
 		return isControllerActive.equals( theController );
+	}
+
+	public  Controller< ? > getActiveController( ) {
+		return isControllerActive;
 	}
 
 	public ControlWindow setControllerActive( Controller< ? > theController ) {

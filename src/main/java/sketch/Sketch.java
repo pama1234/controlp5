@@ -24,6 +24,8 @@ public class Sketch extends PApplet {
     }
     public void setup() {
         cp5 = new ControlP5(this);
+        cp5.enableShortcuts();
+
         LayoutBuilder builder = new LayoutBuilder(this, cp5);
 
         try {
@@ -37,13 +39,22 @@ public class Sketch extends PApplet {
 
 
         Keyboard keyboard2 = new Keyboard(cp5, "keyboard2");
-        keyboard2.setPosition(100, 200);
-        keyboard2.setSize(300, 300);
+        keyboard2.setPosition(0, 0);
+        keyboard2.setSize(100, 40);
+        keyboard2.setRange(20, 32);
+
+
+        Textfield textfield1 = new Textfield(cp5, "textfield1");
+        textfield1.setPosition(0, 50);
+        textfield1.setSize(200, 40);
+
 
     }
 
 
     public void draw() {
+
+        System.out.println(cp5.getWindow().getActiveController());
 
     }
 }
