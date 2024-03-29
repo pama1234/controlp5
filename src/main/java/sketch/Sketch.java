@@ -49,12 +49,18 @@ public class Sketch extends PApplet {
         textfield1.setSize(200, 40);
 
 
+        MultilineTextfield multilineTextfield1 = new MultilineTextfield(cp5, "multilineTextfield1");
+        multilineTextfield1.setPosition(250, 250);
+        multilineTextfield1.setSize(200, 200);
+
+
+
     }
 
 
     public void draw() {
 
-        System.out.println(cp5.getWindow().getActiveController());
+
 
     }
 }

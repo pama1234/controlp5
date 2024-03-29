@@ -10,19 +10,5 @@ public class MultilineTextfield extends Textfield {
         TEXTALIGN = 0;
     }
 
-    @Override
-    public void keyEvent(KeyEvent theKeyEvent) {
-        if (isUserInteraction && isTexfieldActive && isActive && theKeyEvent.getAction() == KeyEvent.PRESS) {
-            if (ignorelist.contains(cp5.getKeyCode())) {
-                return;
-            }
-            if (cp5.getKeyCode() == ENTER) {
-                // Append a new line character to the text buffer
-                _myTextBuffer.insert(_myTextBufferIndex, '\n');
-                setIndex(_myTextBufferIndex + 1);
-            } else {
-                super.keyEvent(theKeyEvent);
-            }
-        }
-    }
+
 }

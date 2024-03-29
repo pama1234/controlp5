@@ -491,7 +491,7 @@ public final class ControlWindow {
 			ControlP5Base.KeyCode keyCode = new ControlP5Base.KeyCode( c );
 
 			if ( cp5.keymap.containsKey( keyCode ) ) {
-				for ( ControlKey ck : cp5.keymap.get( keyCode ) ) {
+				for ( MappableCommand ck : cp5.keymap.get( keyCode ) ) {
 					ck.keyEvent( );
 				}
 			}

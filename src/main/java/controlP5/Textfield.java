@@ -36,6 +36,9 @@ import processing.core.PGraphics;
 import processing.event.Event;
 import processing.event.KeyEvent;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 
 /**
  * A singleline input textfield, use arrow keys to go back and forth, use backspace to delete
@@ -55,6 +58,8 @@ public class Textfield extends Controller<Textfield> implements ReleasedOutsideL
     protected boolean isTexfieldActive;
     protected boolean isKeepFocus;
     protected StringBuffer _myTextBuffer = new StringBuffer();
+
+
     protected int _myTextBufferIndex = 0;
     protected int _myTextBufferOverflow = 0;
     protected int _myTextBufferIndexPosition = 0;
@@ -327,6 +332,7 @@ public class Textfield extends Controller<Textfield> implements ReleasedOutsideL
 
 
 
+
     @Override
     public void draw(PGraphics theGraphics) {
 
@@ -358,22 +364,22 @@ public class Textfield extends Controller<Textfield> implements ReleasedOutsideL
 
 
         final String text = passCheck(getText());
-        final int textWidth = ControlFont.getWidthFor(text.substring(0, _myTextBufferIndex), _myValueLabel, buffer);
-        final int dif = PApplet.max(textWidth - _myValueLabel.getWidth(), 0);
+//        final int textWidth = ControlFont.getWidthFor(text.substring(0, _myTextBufferIndex), _myValueLabel, buffer); // width of the text up to the cursor
+//        final int dif = PApplet.max(textWidth - _myValueLabel.getWidth(), 0);
         final int _myTextBufferIndexPosition = ControlFont.getWidthFor(text.substring(0, _myTextBufferIndex), _myValueLabel, buffer);
         _myValueLabel.setText(text);
-
-        if (TEXTALIGN == 0) { // Left align.
-            _myValueLabel.draw(buffer, -dif , 0, this);
+//
+//        if (TEXTALIGN == 0) { // Left align.
+            _myValueLabel.draw(buffer, 0 , 0, this);
             buffer.noStroke();
-
-        } else if (TEXTALIGN == 1) { // Center align.
-            int centerPoint = getWidth() / 2;
-            int textShift = centerPoint - textWidth / 2;
-            _myValueLabel.draw(buffer, textShift, 0, this);
-            buffer.noStroke();
-
-        }
+//
+//        } else if (TEXTALIGN == 1) { // Center align.
+//            int centerPoint = getWidth() / 2;
+//            int textShift = centerPoint - textWidth / 2;
+//            _myValueLabel.draw(buffer, textShift, 0, this);
+//            buffer.noStroke();
+//
+//        }
 
         if (isTexfieldActive) {
             if (!cp5.papplet.keyPressed) {
@@ -383,13 +389,42 @@ public class Textfield extends Controller<Textfield> implements ReleasedOutsideL
             }
             // we insert 3 char worth of spacing
             int cursorX = _myTextBufferIndexPosition ;
-            cursorX = Math.min(cursorX,_myValueLabel.getWidth()-1);
+            cursorX = min(cursorX,_myValueLabel.getWidth()-1);
             int cursorY = 0;
             int cursorWidth = 1;
             int cursorHeight = getHeight();
+
             if(_myValueLabel.isMultiline){
                 cursorHeight = _myValueLabel.getLineHeight();
+
+
+                // calculate the cursor position
+//                int column = 0;
+                int row = 0;
+                StringBuilder textAccumulator = new StringBuilder(); //this will have the text line's text from the beginning of the line, until the cursor position
+                String textUntilCursor = text.substring(0, _myTextBufferIndex);
+                for( char c : textUntilCursor.toCharArray()){
+                    if(c == '\n'){
+                        row++;
+//                        column = 0;
+                        textAccumulator = new StringBuilder();
+                    }
+                    else{
+//                        column++;
+                        textAccumulator.append(c);
+                    }
+
+                }
+
+                cursorY = row * cursorHeight;
+                cursorX = ControlFont.getWidthFor(textAccumulator.toString(), _myValueLabel, buffer);
+
+
+
+
             }
+
+
 
             buffer.rect(cursorX, cursorY, cursorWidth, cursorHeight);
         }
@@ -466,7 +501,10 @@ public class Textfield extends Controller<Textfield> implements ReleasedOutsideL
     class InsertCharacter implements TextfieldCommand {
 
         public void execute() {
-            if ((int) (cp5.getKey()) == 65535) {
+            if ((int) (cp5.getKey()) == 65535) { // ignore delete key
+                return;
+            }
+            else if ((int) (cp5.getKey()) == 10) { //ignore return key
                 return;
             }
 
@@ -477,20 +515,28 @@ public class Textfield extends Controller<Textfield> implements ReleasedOutsideL
         }
     }
 
+
+
     class Enter implements TextfieldCommand {
 
         public void execute() {
-            setStringValue(_myTextBuffer.toString());
-            broadcast();
-            // update current buffer with the last item inside the input history
-            _myHistory.set(_myHistory.size() - 1, _myTextBuffer.toString());
-            // set the history index to our last item
-            _myHistoryIndex = _myHistory.size();
-            // add a new and empty buffer to the history
-            _myHistory.add("");
-            if (autoclear) {
-                clear();
+            if (_myValueLabel.isMultiline()) {
+                _myTextBuffer.insert(_myTextBufferIndex, '\n');
+                setIndex(_myTextBufferIndex + 1);
+            }else{
+                setStringValue(_myTextBuffer.toString());
+                broadcast();
+                // update current buffer with the last item inside the input history
+                _myHistory.set(_myHistory.size() - 1, _myTextBuffer.toString());
+                // set the history index to our last item
+                _myHistoryIndex = _myHistory.size();
+                // add a new and empty buffer to the history
+                _myHistory.add("");
+                if (autoclear) {
+                    clear();
+                }
             }
+
         }
     }
 
@@ -521,26 +567,78 @@ public class Textfield extends Controller<Textfield> implements ReleasedOutsideL
     class MoveUp implements TextfieldCommand {
 
         public void execute() {
-            if (_myHistoryIndex == 0) {
-                return;
+            if (_myValueLabel.isMultiline) {
+                char[] text = _myTextBuffer.toString().toCharArray();
+                int lineStart = 0;
+                int targetPosition = 0;
+                int horizontalPosition = _myTextBufferIndex - _myTextBuffer.lastIndexOf("\n", _myTextBufferIndex) - 1;
+
+                for (int i = _myTextBufferIndex - 1; i >= 0; i--) {
+                    if (text[i] == '\n') {
+                        lineStart = i + 1;
+                        break;
+                    }
+                }
+
+                int previousLineEnd = lineStart - 1;
+                int previousLineStart = 0;
+                for (int i = previousLineEnd; i >= 0; i--) {
+                    if (text[i] == '\n') {
+                        previousLineStart = i + 1;
+                        break;
+                    }
+                }
+
+                targetPosition = Math.min(horizontalPosition, previousLineEnd - previousLineStart);
+                setIndex(previousLineStart + targetPosition);
+            } else {
+                // Logic for single-line handling
+                if (_myHistoryIndex <= 0) return;
+                _myHistoryIndex = PApplet.max(0, --_myHistoryIndex);
+                _myTextBuffer = new StringBuffer(_myHistory.get(_myHistoryIndex));
+                setIndex(_myTextBuffer.length());
             }
-            _myHistoryIndex = PApplet.max(0, --_myHistoryIndex);
-            _myTextBuffer = new StringBuffer(_myHistory.get(_myHistoryIndex));
-            setIndex(_myTextBuffer.length());
         }
     }
+
+
 
     class MoveDown implements TextfieldCommand {
 
         public void execute() {
-            if (_myHistoryIndex >= _myHistory.size() - 1) {
-                return;
-            }
+            if (_myValueLabel.isMultiline) {
+                char[] text = _myTextBuffer.toString().toCharArray();
+                int lineEnd = text.length;
+                int targetPosition = 0;
+                int horizontalPosition = _myTextBufferIndex - _myTextBuffer.lastIndexOf("\n", _myTextBufferIndex) - 1;
 
-            _myHistoryIndex = PApplet.min(_myHistory.size() - 1, ++_myHistoryIndex);
-            _myTextBuffer = new StringBuffer(_myHistory.get(_myHistoryIndex));
-            setIndex(_myTextBuffer.length());
+                for (int i = _myTextBufferIndex + 1; i < text.length; i++) {
+                    if (text[i] == '\n') {
+                        lineEnd = i;
+                        break;
+                    }
+                }
+
+                int nextLineStart = lineEnd + 1;
+                int nextLineEnd = text.length;
+                for (int i = nextLineStart; i < text.length; i++) {
+                    if (text[i] == '\n') {
+                        nextLineEnd = i;
+                        break;
+                    }
+                }
+
+                targetPosition = Math.min(horizontalPosition, nextLineEnd - nextLineStart);
+                setIndex(nextLineStart + targetPosition);
+            } else {
+                // Existing logic for single-line handling
+                if (_myHistoryIndex >= _myHistory.size() - 1) return;
+                _myHistoryIndex = PApplet.min(_myHistory.size() - 1, ++_myHistoryIndex);
+                _myTextBuffer = new StringBuffer(_myHistory.get(_myHistoryIndex));
+                setIndex(_myTextBuffer.length());
+            }
         }
     }
+
 
 }

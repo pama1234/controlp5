@@ -206,21 +206,21 @@ public class ControlP5 extends ControlP5Base {
 			welcome( );
 		}
 
-		mapKeyFor( new ControlKey( ) {
+		mapKeyFor( new MappableCommand( ) {
 
 			public void keyEvent( ) {
 				saveProperties( );
 			}
 		} , PApplet.ALT , PApplet.SHIFT , 's' );
 
-		mapKeyFor( new ControlKey( ) {
+		mapKeyFor( new MappableCommand( ) {
 
 			public void keyEvent( ) {
 				loadProperties( );
 			}
 		} , PApplet.ALT , PApplet.SHIFT , 'l' );
 
-		mapKeyFor( new ControlKey( ) {
+		mapKeyFor( new MappableCommand( ) {
 
 			public void keyEvent( ) {
 				if ( controlWindow.isVisible ) {

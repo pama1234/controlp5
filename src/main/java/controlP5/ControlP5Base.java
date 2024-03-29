@@ -53,7 +53,7 @@ import static controlP5.Controller.*;
 	private ControllerAutomator _myAutomator;
 	protected Map< Object , ArrayList< ControllerInterface< ? >>> _myObjectToControllerMap = new HashMap< Object , ArrayList< ControllerInterface< ? >>>( );
 	protected Map< String , FieldChangedListener > _myFieldChangedListenerMap = new HashMap< String , FieldChangedListener >( );
-	protected Map< KeyCode , List< ControlKey >> keymap = new HashMap< KeyCode , List< ControlKey >>( );
+	protected Map< KeyCode , List<MappableCommand>> keymap = new HashMap< KeyCode , List<MappableCommand>>( );
 	protected ControllerGroup< ? > currentGroupPointer;
 	protected boolean isCurrentGroupPointerClosed = true;
 	protected int autoDirection = HORIZONTAL;
@@ -652,41 +652,44 @@ import static controlP5.Controller.*;
 		return n;
 	}
 
-	public ControlP5 removeKeyFor( ControlKey theKey , int ... theChar ) {
+	public ControlP5 removeKeyFor(MappableCommand theKey , int ... theChar ) {
 		removeKeyFor( theKey , fromIntToChar( theChar ) );
 		return cp5;
 	}
 
-	public ControlP5 mapKeyFor( ControlKey theKey , Object ... os ) {
-		List< Integer > l = new ArrayList< Integer >( );
-		for ( Object o : os ) {
-			if ( o instanceof Integer ) {
-				l.add( ( int ) ( Integer ) o );
-			} else if ( o instanceof Character ) {
-				char c = ( ( Character ) o );
-				if ( c >= 'a' && c <= 'z' ) {
-					c -= 32;
+	public ControlP5 mapKeyFor(MappableCommand command, Object ... keys) {
+
+		List<Integer> integerList = new ArrayList<Integer>();
+		// keys can be either int or char, convert to int and add to list
+		for (Object object : keys) {
+			if (object instanceof Integer) {
+				integerList.add((int) (Integer) object);
+			} else if (object instanceof Character) {
+				char character = ((Character) object);
+				if (character >= 'a' && character <= 'z') {
+					character -= 32;
 				}
-				l.add( ( int ) c );
+				integerList.add((int) character);
 			}
 		}
 
-		char[] n = new char[ l.size( ) ];
-		for ( int i = 0 ; i < l.size( ) ; i++ ) {
-			n[ i ] = ( char ) ( ( int ) l.get( i ) );
+		// convert list to char array
+		char[] charArray = new char[integerList.size()];
+		for (int i = 0; i < integerList.size(); i++) {
+			charArray[i] = (char) ((int) integerList.get(i));
 		}
 
-		KeyCode kc = new KeyCode( n );
-		if ( !keymap.containsKey( kc ) ) {
-			keymap.put( kc , new ArrayList< ControlKey >( ) );
+		KeyCode keyCode = new KeyCode(charArray);
+		if (!keymap.containsKey(keyCode)) {
+			keymap.put(keyCode, new ArrayList<MappableCommand>());
 		}
-		keymap.get( kc ).add( theKey );
-		cp5.enableShortcuts( );
+		keymap.get(keyCode).add(command);
+		cp5.enableShortcuts();
 		return cp5;
 	}
 
-	public ControlP5 removeKeyFor( ControlKey theKey , char ... theChar ) {
-		List< ControlKey > l = keymap.get( new KeyCode( theChar ) );
+	public ControlP5 removeKeyFor(MappableCommand theKey , char ... theChar ) {
+		List<MappableCommand> l = keymap.get( new KeyCode( theChar ) );
 		if ( l != null ) {
 			l.remove( theKey );
 		}

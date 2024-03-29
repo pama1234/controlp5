@@ -25,7 +25,7 @@ package controlP5;
  * 
  */
 
-public interface ControlKey {
+public interface MappableCommand {
 
 	public void keyEvent();
 }
