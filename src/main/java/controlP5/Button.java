@@ -300,21 +300,31 @@ public class Button extends Controller< Button >  {
 		}
 	}
 
-	private class ButtonImageView implements ControllerView< Button > {
+	private class ButtonImageView implements ControllerView<Button> {
 
 		public void display(PGraphics theGraphics, Button theController) {
+			theGraphics.pushStyle();
 			PImage imageToDraw;
+			int backgroundColor = 0;
+
 			if (isOn && isSwitch) {
-				imageToDraw = (availableImages[HIGHLIGHT] == true) ? images[HIGHLIGHT] : images[DEFAULT];
+				imageToDraw = (availableImages[HIGHLIGHT]) ? images[HIGHLIGHT] : images[DEFAULT];
+				backgroundColor = color.getActive(); // Background color for ACTIVE state
 			} else if (getIsInside()) {
 				if (isPressed) {
-					imageToDraw = (availableImages[ACTIVE] == true) ? images[ACTIVE] : images[DEFAULT];
+					imageToDraw = (availableImages[ACTIVE]) ? images[ACTIVE] : images[DEFAULT];
+					backgroundColor = color.getBackground(); // Background color for ACTIVE state
 				} else {
-					imageToDraw = (availableImages[OVER] == true) ? images[OVER] : images[DEFAULT];
+					imageToDraw = (availableImages[OVER]) ? images[OVER] : images[DEFAULT];
+					backgroundColor = color.getForeground(); // Foreground color for OVER state
 				}
 			} else {
 				imageToDraw = images[DEFAULT];
+
 			}
+
+			if(backgroundColor != 0) theGraphics.fill(backgroundColor);
+			theGraphics.rect(0, 0, getWidth(), getHeight());
 
 			// Calculate the position to center the image
 			float xPos = (theController.getWidth() - imageToDraw.width) / 2.0f;
@@ -322,7 +332,7 @@ public class Button extends Controller< Button >  {
 
 			// Draw the image at the calculated position
 			theGraphics.image(imageToDraw, xPos, yPos);
-
+			theGraphics.popStyle();
 		}
 	}
 

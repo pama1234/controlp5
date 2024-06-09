@@ -39,7 +39,7 @@ public class Sketch extends PApplet {
 
 
         Keyboard keyboard2 = new Keyboard(cp5, "keyboard2");
-        keyboard2.setPosition(0, 0);
+        keyboard2.setPosition(200, 200);
         keyboard2.setSize(100, 40);
         keyboard2.setRange(20, 32);
 
@@ -53,6 +53,14 @@ public class Sketch extends PApplet {
         multilineTextfield1.setPosition(250, 250);
         multilineTextfield1.setSize(200, 200);
 
+
+
+        Group group1 = new Group(cp5, "group1");
+        group1.setPosition(500, 500);
+        group1.setSize(200, 200);
+        keyboard2.moveTo(group1);
+        keyboard2.setPosition(0, 0);
+        keyboard2.setHighlightedKeys(new int[]{21,22});
 
 
     }

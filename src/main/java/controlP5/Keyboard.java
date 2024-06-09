@@ -6,15 +6,19 @@ import java.util.ArrayList;
 
 public class Keyboard extends Controller<Keyboard> {
 
+
     public static class Key{
         public int pitch;
         public PVector leftTop;
         public PVector rightBottom;
 
+        public boolean highlighted = false;
+
         public Key(int pitch, PVector leftTop, PVector rightBottom){
             this.pitch = pitch;
             this.leftTop = leftTop;
             this.rightBottom = rightBottom;
+
         }
 
     }
@@ -103,6 +107,20 @@ public class Keyboard extends Controller<Keyboard> {
     }
 
 
+    public Keyboard setHighlightedKeys(int[] pressedKeys) {
+        for (int i = 0; i < keys.size(); i++) {
+            Key key = keys.get(i);
+            for (int j = 0; j < pressedKeys.length; j++) {
+                if (key.pitch == pressedKeys[j]) {
+                    key.highlighted = true;
+                }
+                else {
+                    key.highlighted = false;
+                }
+            }
+        }
+        return this;
+    }
 }
 
 
@@ -117,8 +135,8 @@ class KeyboardView implements ControllerView<Keyboard> {
         theGraphics.pushMatrix();
         theGraphics.pushStyle();
 
-        float[] absolutePosition = theController.getAbsolutePosition();
-        theGraphics.translate(absolutePosition[0], absolutePosition[1]);
+        float[] position = theController.getPosition();
+        theGraphics.translate(position[0], position[1]);
 
         theGraphics.stroke(0);
         theGraphics.strokeWeight(0.25f);
@@ -141,13 +159,16 @@ class KeyboardView implements ControllerView<Keyboard> {
             }
             if (key.pitch == theController.hoveredNote) {
                 theGraphics.fill(127); // Highlight hovered note
+            }else if (key.highlighted) {
+                theGraphics.fill(52, 77, 192); // Highlight pressed note
             }
+
 
             theGraphics.rect(x, y, width, height);
             theGraphics.fill(0);
 
             String noteName = pitchToNoteName(key.pitch);
-            theGraphics.textSize(7);
+            theGraphics.textSize(12);
             float textWidth = theGraphics.textWidth(noteName);
 
             theGraphics.text(noteName, x + width / 2 - textWidth / 2, y + height / 2);
